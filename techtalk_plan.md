@@ -60,14 +60,15 @@
 ## ۳. جدول نهایی اسلایدها به ترتیب زمانی (Slide Deck Blueprint)
 
 1. **اسلاید ۱ ([slide1.jpg](file:///d:/work/erae-ali/slides/slide1.jpg)):** تصویر تی‌رکس با شهاب‌سنگ در پس‌زمینه و پستانداران کوچک (افتتاحیه و معرفی دوقلوهای ترس).
-2. **اسلاید ۲ ([slide2.jpg](file:///d:/work/erae-ali/slides/slide2.jpg)):** سال ۱۳۸۸ تا ۱۳۹۴ — فنجان جاوا در برابر رک‌های سرور عملیات (۶ سال کدنویسی و ورود به عملیات).
-3. **اسلاید ۳ ([slide3.jpg](file:///d:/work/erae-ali/slides/slide3.jpg)):** سال ۱۳۹۵ — کد جاوا و کنسول WebLogic و سطل آشغال Deprecated (ماژول احراز هویت اختصاصی).
-4. **اسلاید ۴ ([slide4.jpg](file:///d:/work/erae-ali/slides/slide4.jpg)):** سال ۱۳۹۶ — ترمینال حلقه `for` و دستور `shutdown -h now` در راهروی دیتاسنتر (ضرورت اتوماسیون با Jenkins).
-5. **اسلاید ۵ ([slide5.jpg](file:///d:/work/erae-ali/slides/slide5.jpg)):** سال ۱۳۹۷ — هدایت لاگ‌های پراکنده سرورها به داشبورد متمرکز Kibana / ELK.
-6. **اسلاید ۶ ([slide6.jpg](file:///d:/work/erae-ali/slides/slide6.jpg)):** سال ۱۳۹۸ تا ۱۴۰۰ — چرخه ۵ مرحله‌ای R&D Ops Lifecycle و شعار `BUILD WITH QUALITY — RELEASE WITHOUT ATTACHMENT`.
-7. **اسلاید ۷ ([slide7.jpg](file:///d:/work/erae-ali/slides/slide7.jpg)):** سال ۱۴۰۰ (نقطه اوج) — مانیتور ساعت `06:00 AM` و وضعیت `SYSTEM STATUS: CRITICAL` در صبح بحران کوبرنتیز بانک.
-8. **اسلاید ۸ ([slide8.jpg](file:///d:/work/erae-ali/slides/slide8.jpg)):** سال ۱۴۰۳ — معماری پلتفرم خودکارسازی هوشمند عملیات (`AUTONOMOUS ISR PLATFORM`).
-9. **اسلاید ۹ ([slide9.jpg](file:///d:/work/erae-ali/slides/slide9.jpg)):** شهاب‌سنگ هوش مصنوعی (`AI`) و تقابل دو رویکرد مهندسان (قلعه سنتی در برابر استقبال در فضای باز).
-10. **اسلاید ۱۰ ([slide10.jpg](file:///d:/work/erae-ali/slides/slide10.jpg)):** تصویر زمین از فضا با شعار پایانی: «دایناسور نباشید؛ پوست بیندازید و زنده بمانید.»
+2. **اسلاید ۲ ([career_roadmap_highway.jpg](file:///d:/work/erae-ali/slides/career_roadmap_highway.jpg)):** نقشه راه ۱۶ ساله — بزرگراه هولوگرافیک دیتاسنتر از سال ۱۳۸۸ تا ۱۴۰۳+ (معرفی ۷ ایستگاه سفر بقا).
+3. **اسلاید ۳ ([slide2.jpg](file:///d:/work/erae-ali/slides/slide2.jpg)):** سال ۱۳۸۸ تا ۱۳۹۴ — فنجان جاوا در برابر رک‌های سرور عملیات (۶ سال کدنویسی و جهش به عملیات با Query Executor).
+4. **اسلاید ۴ ([slide3.jpg](file:///d:/work/erae-ali/slides/slide3.jpg)):** سال ۱۳۹۵ — وب‌لاجیک در اسکیل Enterprise (ماژول احراز هویت اختصاصی و درسِ رها کردن ابزار).
+5. **اسلاید ۵ ([slide4.jpg](file:///d:/work/erae-ali/slides/slide4.jpg)):** سال ۱۳۹۶ — ترمینال حلقه `for` و دستور `shutdown -h now` در دیتاسنتر (ضرورت اتوماسیون با Jenkins و Groovy).
+6. **اسلاید ۶ ([slide5.jpg](file:///d:/work/erae-ali/slides/slide5.jpg)):** سال ۱۳۹۷ — هدایت لاگ‌های پراکنده سرورها به پلتفرم متمرکز ELK.
+7. **اسلاید ۷ ([slide6.jpg](file:///d:/work/erae-ali/slides/slide6.jpg)):** سال ۱۳۹۸ تا ۱۴۰۰ — چرخه ۵ مرحله‌ای R&D Ops Lifecycle و شعار `BUILD WITH QUALITY — RELEASE WITHOUT ATTACHMENT`.
+8. **اسلاید ۸ ([slide7.jpg](file:///d:/work/erae-ali/slides/slide7.jpg)):** سال ۱۴۰۰ (نقطه اوج) — مانیتور ساعت `06:00 AM` و وضعیت `SYSTEM STATUS: CRITICAL` در صبح بحران کوبرنتیز بانک.
+9. **اسلاید ۹ ([slide8.jpg](file:///d:/work/erae-ali/slides/slide8.jpg)):** سال ۱۴۰۳ — پلتفرم خودکارسازی هوشمند عملیات (`AUTONOMOUS ISR PLATFORM`).
+10. **اسلاید ۱۰ ([slide9.jpg](file:///d:/work/erae-ali/slides/slide9.jpg)):** شهاب‌سنگ هوش مصنوعی (`AI`) و تقابل دو رویکرد مهندسان (قلعه سنتی در برابر استقبال در فضای باز).
+11. **اسلاید ۱۱ ([slide10.jpg](file:///d:/work/erae-ali/slides/slide10.jpg)):** تصویر زمین از فضا با شعار پایانی: «دایناسور نباشید؛ پوست بیندازید و زنده بمانید.»
 
 </div>

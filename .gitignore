@@ -1,0 +1,16 @@
+# Microsoft Office temporary lock files
+~$*.pptx
+~$*.docx
+~$*.xlsx
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# OS temporary files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.DS_Store
