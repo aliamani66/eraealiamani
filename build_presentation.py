@@ -1,8 +1,11 @@
 """
 TechTalk Presentation Builder Engine
-Generates interactive, clickable PowerPoint presentations based on slides_config.json.
-Supports adding new slides, modifying the career roadmap, adjusting hotspots,
-and handling open file locks cleanly.
+Generates clean, interactive, clickable PowerPoint presentations based on slides_config.json.
+Features:
+- Pure minimal iconography for navigation buttons (no verbose text clutter).
+- Zero top badges to preserve 100% of the image artwork headers.
+- Dynamic ID-based hyperlinking for stations and roadmaps.
+- Windows file lock handling.
 """
 
 import os
@@ -19,7 +22,6 @@ if hasattr(sys.stderr, "reconfigure"):
     sys.stderr.reconfigure(encoding="utf-8", errors="replace")
 
 from pptx import Presentation
-
 from pptx.util import Inches, Pt
 from pptx.dml.color import RGBColor
 from pptx.enum.text import PP_ALIGN
@@ -55,13 +57,11 @@ def validate_config(config, base_dir):
         if not img_name:
             errors.append(f"Slide '{s_id}' has no 'file' specified.")
         else:
-            # Check relative to base_dir or slides_dir
             path_in_slides = os.path.join(slides_dir, img_name)
             path_in_base = os.path.join(base_dir, img_name)
             if not (os.path.exists(path_in_slides) or os.path.exists(path_in_base)):
                 errors.append(f"Slide '{s_id}': Image '{img_name}' not found in '{slides_dir}' or '{base_dir}'.")
                 
-    # Validate roadmap hotspots
     roadmap = config.get("roadmap_settings", {})
     roadmap_slide_id = roadmap.get("roadmap_slide_id")
     if roadmap_slide_id and roadmap_slide_id not in slide_ids:
@@ -86,39 +86,42 @@ def validate_config(config, base_dir):
     return True
 
 
-def style_rtl_text(shape, text, font_size_pt=12, is_bold=True, text_color=RGBColor(255, 255, 255), align=PP_ALIGN.CENTER):
-    tf = shape.text_frame
-    tf.word_wrap = True
-    p = tf.paragraphs[0]
-    p.text = text
-    p.font.name = 'Vazirmatn'
-    p.font.size = Pt(font_size_pt)
-    p.font.bold = is_bold
-    p.font.color.rgb = text_color
-    p.alignment = align
-    pPr = p._p.get_or_add_pPr()
-    pPr.set('rtl', '1')
-
-
-def add_button(slide, left, top, width, height, text, target_slide, font_size_pt=12, bg_rgb=(15, 23, 42), border_rgb=(6, 182, 212)):
-    btn = slide.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, left, top, width, height)
+def add_icon_button(slide, left, top, size, icon, target_slide, font_size_pt=14, bg_rgb=(15, 23, 42), border_rgb=(6, 182, 212)):
+    """Creates a minimal, sleek icon-only navigation button with no text clutter."""
+    btn = slide.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, left, top, size, size)
     btn.fill.solid()
     btn.fill.fore_color.rgb = RGBColor(*bg_rgb)
     btn.line.color.rgb = RGBColor(*border_rgb)
-    btn.line.width = Pt(1.5)
-    style_rtl_text(btn, text, font_size_pt=font_size_pt, is_bold=True, text_color=RGBColor(255, 255, 255), align=PP_ALIGN.CENTER)
+    btn.line.width = Pt(1.2)
+    
+    tf = btn.text_frame
+    tf.word_wrap = False
+    tf.margin_left = Inches(0)
+    tf.margin_right = Inches(0)
+    tf.margin_top = Inches(0)
+    tf.margin_bottom = Inches(0)
+    
+    p = tf.paragraphs[0]
+    p.text = icon
+    p.font.name = 'Segoe UI Emoji'
+    p.font.size = Pt(font_size_pt)
+    p.font.bold = True
+    p.font.color.rgb = RGBColor(255, 255, 255)
+    p.alignment = PP_ALIGN.CENTER
+    
     btn.click_action.target_slide = target_slide
     return btn
 
 
 def add_transparent_hotspot(slide, left, top, width, height, target_slide):
+    """Creates an invisible hotspot rectangle that reliably captures mouse clicks."""
     shape = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, left, top, width, height)
     spPr = shape._element.spPr
     for child in list(spPr):
         if child.tag.endswith('solidFill') or child.tag.endswith('ln'):
             spPr.remove(child)
             
-    # Add near-zero alpha fill (catches clicks reliably in presentation mode)
+    # Alpha = 100 ensures mouse clicks are captured without any visible obstruction
     fill_xml = parse_xml(
         '<a:solidFill xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main">'
         '<a:srgbClr val="FFFFFF"><a:alpha val="100"/></a:srgbClr>'
@@ -155,12 +158,11 @@ def build_presentation(config_path, output_override=None):
     slides_cfg = config.get("slides", [])
     roadmap_cfg = config.get("roadmap_settings", {})
     
-    # Mapping table: slide_id -> pptx_slide_object
     id_to_slide = {}
     id_to_idx = {}
     
     print("\n📦 Generating slides and transitions...")
-    # Step 1: Create all slides with images, notes, transitions
+    # Step 1: Create all slides with full-bleed 16:9 images, transitions, and notes
     for idx, scfg in enumerate(slides_cfg):
         s_id = scfg["id"]
         img_name = scfg["file"]
@@ -191,7 +193,7 @@ def build_presentation(config_path, output_override=None):
     roadmap_slide = id_to_slide.get(roadmap_id)
     
     if roadmap_slide:
-        print("\n🗺️ Adding roadmap clickable hotspots and shortcuts...")
+        print("\n🗺️ Adding roadmap clickable hotspots and minimal shortcut...")
         for hs in roadmap_cfg.get("hotspots", []):
             target_id = hs.get("target_slide_id")
             target_slide = id_to_slide.get(target_id)
@@ -209,140 +211,91 @@ def build_presentation(config_path, output_override=None):
             add_transparent_hotspot(roadmap_slide, x_in, y_in, w_in, h_in, target_slide)
             print(f"  • Hotspot '{hs.get('name')}' -> '{target_id}' (Slide #{id_to_idx[target_id]+1})")
             
-        # Quick jump button
+        # Minimal quick jump icon button (no verbose text)
         qj = roadmap_cfg.get("quick_jump")
         if qj and qj.get("target_slide_id") in id_to_slide:
             q_target = id_to_slide[qj["target_slide_id"]]
-            add_button(
+            add_icon_button(
                 roadmap_slide,
-                left=Inches(0.5),
+                left=Inches(0.4),
                 top=Inches(0.35),
-                width=Inches(3.4),
-                height=Inches(0.52),
-                text=qj.get("text", "☄️ پرده پایانی ◀"),
+                size=Inches(0.46),
+                icon=qj.get("icon", "☄️"),
                 target_slide=q_target,
-                font_size_pt=qj.get("font_size_pt", 11.5),
+                font_size_pt=14,
                 bg_rgb=qj.get("bg_color", [26, 16, 37]),
                 border_rgb=qj.get("border_color", [236, 72, 153])
             )
-            
-        # Interactive hint banner
-        hint = roadmap_cfg.get("hint")
-        if hint:
-            hint_box = roadmap_slide.shapes.add_shape(
-                MSO_SHAPE.ROUNDED_RECTANGLE,
-                Inches(3.8),
-                Inches(6.85),
-                Inches(5.7),
-                Inches(0.45)
-            )
-            hint_box.fill.solid()
-            hint_box.fill.fore_color.rgb = RGBColor(*hint.get("bg_color", [10, 15, 28]))
-            hint_box.line.color.rgb = RGBColor(*hint.get("border_color", [30, 58, 95]))
-            hint_box.line.width = Pt(1)
-            style_rtl_text(
-                hint_box,
-                hint.get("text", ""),
-                font_size_pt=hint.get("font_size_pt", 11),
-                is_bold=False,
-                text_color=RGBColor(*hint.get("text_color", [148, 163, 184])),
-                align=PP_ALIGN.CENTER
-            )
 
-    # Step 3: Add Navigation Buttons and Station Badges to slides
-    print("\n🧭 Adding dynamic badges and navigation buttons...")
+    # Step 3: Add Minimal Clean Navigation Buttons (NO TOP BADGES!)
+    print("\n🧭 Adding clean icon-only navigation buttons...")
+    btn_size = Inches(0.44)
+    btn_y_bottom = Inches(6.7)
+    
     for idx, scfg in enumerate(slides_cfg):
         s_id = scfg["id"]
         slide = id_to_slide[s_id]
         
-        # 1. Back to Roadmap button
+        # 1. Back to Roadmap icon button (Top-Left, minimal icon [🗺️], no text)
         if scfg.get("back_to_roadmap", False) and roadmap_slide:
-            add_button(
+            add_icon_button(
                 slide,
-                left=Inches(0.5),
+                left=Inches(0.4),
                 top=Inches(0.35),
-                width=Inches(3.1),
-                height=Inches(0.52),
-                text="🗺️ بازگشت به بزرگراه مسیر شغلی",
+                size=btn_size,
+                icon="🗺️",
                 target_slide=roadmap_slide,
-                font_size_pt=12,
+                font_size_pt=14,
                 bg_rgb=[15, 23, 42],
                 border_rgb=[6, 182, 212]
             )
-            
-        # 2. Station Badge
-        badge_text = scfg.get("badge")
-        if badge_text:
-            badge = slide.shapes.add_shape(
-                MSO_SHAPE.ROUNDED_RECTANGLE,
-                Inches(4.5),
-                Inches(0.35),
-                Inches(8.3),
-                Inches(0.52)
-            )
-            badge.fill.solid()
-            badge.fill.fore_color.rgb = RGBColor(10, 15, 30)
-            badge.line.color.rgb = RGBColor(56, 189, 248)
-            badge.line.width = Pt(1.5)
-            style_rtl_text(
-                badge,
-                badge_text,
-                font_size_pt=12,
-                is_bold=True,
-                text_color=RGBColor(241, 245, 249),
-                align=PP_ALIGN.CENTER
-            )
 
-        # 3. Next / Previous Buttons
+        # 2. Next / Previous icon buttons (Bottom corners, minimal [◀] and [▶], no text)
         if scfg.get("nav_buttons", False):
-            # Previous slide button
-            if idx > 0 and slides_cfg[idx - 1].get("type") in ["station", "conclusion"]:
+            # Previous slide button (Bottom-Right, minimal icon [▶])
+            if idx > 0:
                 prev_slide = id_to_slide[slides_cfg[idx - 1]["id"]]
-                add_button(
+                add_icon_button(
                     slide,
-                    left=Inches(10.6),
-                    top=Inches(6.8),
-                    width=Inches(2.2),
-                    height=Inches(0.45),
-                    text="▶ ایستگاه قبلی",
+                    left=Inches(12.45),
+                    top=btn_y_bottom,
+                    size=btn_size,
+                    icon="▶",
                     target_slide=prev_slide,
-                    font_size_pt=11,
+                    font_size_pt=12,
                     bg_rgb=[15, 23, 42],
                     border_rgb=[100, 116, 139]
                 )
                 
-            # Next slide button
+            # Next slide button (Bottom-Left, minimal icon [◀])
             if idx < len(slides_cfg) - 1:
                 next_slide = id_to_slide[slides_cfg[idx + 1]["id"]]
-                next_text = scfg.get("next_text") or "ایستگاه بعدی ◀"
-                next_border = [236, 72, 153] if "☄️" in next_text or "🌍" in next_text else [6, 182, 212]
-                add_button(
+                is_finale = (idx >= len(slides_cfg) - 3)
+                next_border = [236, 72, 153] if is_finale else [6, 182, 212]
+                add_icon_button(
                     slide,
-                    left=Inches(0.5),
-                    top=Inches(6.8),
-                    width=Inches(3.1 if len(next_text) > 16 else 2.2),
-                    height=Inches(0.45),
-                    text=next_text,
+                    left=Inches(0.4),
+                    top=btn_y_bottom,
+                    size=btn_size,
+                    icon="◀",
                     target_slide=next_slide,
-                    font_size_pt=11,
+                    font_size_pt=12,
                     bg_rgb=[15, 23, 42],
                     border_rgb=next_border
                 )
 
     # Step 4: Save PowerPoint presentation safely
     print("\n💾 Saving presentations...")
-    primary_out = output_override or pres_meta.get("output_primary", "TechTalk_Dinosaurs_Survival_Interactive.pptx")
+    primary_out = output_override or pres_meta.get("output_primary", "TechTalk_Dinosaurs_Survival.pptx")
     primary_path = os.path.join(base_dir, primary_out)
-    fallback_out = pres_meta.get("output_fallback", "TechTalk_Dinosaurs_Survival.pptx")
-    fallback_path = os.path.join(base_dir, fallback_out)
-    
-    saved_paths = []
+    interactive_out = pres_meta.get("output_interactive", "TechTalk_Dinosaurs_Survival_Interactive.pptx")
+    interactive_path = os.path.join(base_dir, interactive_out)
+    clean_path = os.path.join(base_dir, "TechTalk_Dinosaurs_Survival_Clean.pptx")
     
     def try_save(target_path, desc):
         try:
             prs.save(target_path)
             print(f"  ✅ Saved {desc}: {target_path}")
-            saved_paths.append(target_path)
             return True
         except PermissionError:
             print(f"  ⚠️ Note: '{os.path.basename(target_path)}' is currently open in PowerPoint (file locked).")
@@ -351,23 +304,20 @@ def build_presentation(config_path, output_override=None):
             print(f"  ❌ Error saving '{target_path}': {e}")
             return False
 
-    # Attempt primary
-    saved_primary = try_save(primary_path, "Primary Deck")
+    # Save to Clean guaranteed copy
+    try_save(clean_path, "Clean Guaranteed Deck")
     
-    # Attempt fallback
-    try_save(fallback_path, "Fallback Deck")
+    # Save to primary
+    try_save(primary_path, "Primary Deck")
     
-    # If primary was locked, save timestamped copy so work is never lost
-    if not saved_primary:
-        ts = datetime.now().strftime("%Y%m%d_%H%M%S")
-        alt_path = os.path.join(base_dir, f"TechTalk_Dinosaurs_Survival_{ts}.pptx")
-        try_save(alt_path, "Timestamped Alternative Deck")
+    # Save to interactive (if not locked by user's PowerPoint)
+    try_save(interactive_path, "Interactive Deck")
         
-    print("\n🎉 Presentation build completed successfully!")
+    print("\n🎉 Presentation build completed successfully with pure minimal layout!")
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Build interactive TechTalk PowerPoint decks")
+    parser = argparse.ArgumentParser(description="Build clean interactive TechTalk PowerPoint decks")
     parser.add_argument("--config", default=r"d:\work\erae-ali\slides_config.json", help="Path to slides_config.json")
     parser.add_argument("--output", default=None, help="Custom output PPTX filename")
     parser.add_argument("--validate", action="store_true", help="Only validate configuration without writing")
