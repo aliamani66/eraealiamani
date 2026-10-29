@@ -138,6 +138,106 @@ def add_transparent_hotspot(slide, left, top, width, height, target_slide):
     return shape
 
 
+def add_title_overlay(slide, overlay_cfg, slide_width_in, slide_height_in):
+    """Creates a high-end keynote title card with RTL Persian typography."""
+    card_w = overlay_cfg.get("width_in", 10.2)
+    card_h = overlay_cfg.get("height_in", 3.4)
+    card_top = overlay_cfg.get("top_in", 1.05)
+    card_left = (slide_width_in - card_w) / 2.0
+    
+    card = slide.shapes.add_shape(
+        MSO_SHAPE.ROUNDED_RECTANGLE,
+        Inches(card_left),
+        Inches(card_top),
+        Inches(card_w),
+        Inches(card_h)
+    )
+    spPr = card._element.spPr
+    for child in list(spPr):
+        if child.tag.endswith('solidFill') or child.tag.endswith('ln'):
+            spPr.remove(child)
+            
+    # Frosted dark obsidian backdrop (80% opacity)
+    fill_xml = parse_xml(
+        '<a:solidFill xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main">'
+        '<a:srgbClr val="0A0F1D"><a:alpha val="80000"/></a:srgbClr>'
+        '</a:solidFill>'
+    )
+    spPr.append(fill_xml)
+    
+    # Glowing cyan accent border
+    ln_xml = parse_xml(
+        '<a:ln xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" w="19050">'
+        '<a:solidFill><a:srgbClr val="06B6D4"><a:alpha val="65000"/></a:srgbClr></a:solidFill>'
+        '</a:ln>'
+    )
+    spPr.append(ln_xml)
+    
+    tf = card.text_frame
+    tf.word_wrap = True
+    tf.margin_left = Inches(0.4)
+    tf.margin_right = Inches(0.4)
+    tf.margin_top = Inches(0.28)
+    tf.margin_bottom = Inches(0.28)
+    
+    # 1. Event Tag / Pill
+    tag_text = overlay_cfg.get("tag", "🎙️  رویداد ارائـه تخصصـی مهندسـی  |  TECHTALK")
+    if tag_text:
+        p0 = tf.paragraphs[0]
+        p0.text = tag_text
+        p0.font.name = "Tahoma"
+        p0.font.size = Pt(13)
+        p0.font.bold = True
+        p0.font.color.rgb = RGBColor(56, 189, 248)  # Cyan 400
+        p0.alignment = PP_ALIGN.CENTER
+        p0.space_after = Pt(8)
+        pPr0 = p0._element.get_or_add_pPr()
+        pPr0.set('rtl', '1')
+        
+    # 2. Main Title
+    title_text = overlay_cfg.get("title", "دایناسورهای دنیای تک و مهارتِ بقا")
+    if title_text:
+        p1 = tf.add_paragraph() if tag_text else tf.paragraphs[0]
+        p1.text = title_text
+        p1.font.name = "Tahoma"
+        p1.font.size = Pt(36)
+        p1.font.bold = True
+        p1.font.color.rgb = RGBColor(255, 255, 255)  # Crisp White
+        p1.alignment = PP_ALIGN.CENTER
+        p1.space_after = Pt(10)
+        pPr1 = p1._element.get_or_add_pPr()
+        pPr1.set('rtl', '1')
+        
+    # 3. Subtitle
+    sub_text = overlay_cfg.get("subtitle", "")
+    if sub_text:
+        p2 = tf.add_paragraph()
+        p2.text = sub_text
+        p2.font.name = "Tahoma"
+        p2.font.size = Pt(15)
+        p2.font.bold = False
+        p2.font.color.rgb = RGBColor(203, 213, 225)  # Slate 300
+        p2.alignment = PP_ALIGN.CENTER
+        p2.space_after = Pt(14)
+        pPr2 = p2._element.get_or_add_pPr()
+        pPr2.set('rtl', '1')
+        
+    # 4. Presenter Info
+    pres_text = overlay_cfg.get("presenter", "ارائه‌دهنده: علی امانی   •   پاییز ۱۴۰۳")
+    if pres_text:
+        p3 = tf.add_paragraph()
+        p3.text = pres_text
+        p3.font.name = "Tahoma"
+        p3.font.size = Pt(14)
+        p3.font.bold = True
+        p3.font.color.rgb = RGBColor(251, 191, 36)  # Amber 400
+        p3.alignment = PP_ALIGN.CENTER
+        pPr3 = p3._element.get_or_add_pPr()
+        pPr3.set('rtl', '1')
+        
+    return card
+
+
 def build_presentation(config_path, output_override=None):
     base_dir = os.path.dirname(os.path.abspath(config_path))
     config = load_config(config_path)
@@ -178,6 +278,11 @@ def build_presentation(config_path, output_override=None):
         # Add background image 16:9 full-screen
         slide.shapes.add_picture(img_path, Inches(0), Inches(0), Inches(slide_width_in), Inches(slide_height_in))
         
+        # Add title overlay if specified
+        if "title_overlay" in scfg:
+            add_title_overlay(slide, scfg["title_overlay"], slide_width_in, slide_height_in)
+            print(f"  ✨ Added elegant title card overlay on Slide '{s_id}'.")
+            
         # Add smooth fade transition
         trans_xml = '<p:transition xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main" spd="med"><p:fade/></p:transition>'
         slide._element.append(parse_xml(trans_xml))
