@@ -3,7 +3,7 @@ name: techtalk-presentation-builder
 description: >-
   Interactive PowerPoint Presentation Builder for TechTalk "Dinosaurs Survival".
   Use when adding new slides, updating images, adding or modifying roadmap stations,
-  adjusting speech notes, or regenerating the clickable interactive PowerPoint deck.
+  adjusting speech notes, or regenerating the PowerPoint deck (clicker navigation, station progress bar).
 ---
 
 # TechTalk Interactive Presentation Builder Skill
@@ -15,8 +15,8 @@ This skill guides you through maintaining and extending the interactive PowerPoi
 ## 🏗️ Architecture Overview
 
 The presentation is entirely declarative and managed via two primary files:
-1. **`slides_config.json`**: The single source of truth manifest containing all slide metadata, roadmap hotspots, and navigation links.
-2. **`build_presentation.py`**: The generation engine that validates assets, creates 16:9 widescreen slides, connects hyperlinks dynamically using string IDs, and applies transitions.
+1. **`slides_config.json`**: The single source of truth manifest containing all slide metadata, the `stations` list, and per-slide text overlays.
+2. **`build_presentation.py`**: The generation engine that validates assets, creates 16:9 widescreen slides, draws the station progress bar, and applies transitions. The deck has no buttons or clickable areas; it is driven by a clicker.
 
 All slide background images are stored in `slides/` (or project root) at 16:9 widescreen ratio (e.g., 1376x768 px).
 
@@ -34,45 +34,31 @@ To add a new slide anywhere in the deck:
   "file": "my_new_station.jpg",
   "type": "station",
   "title": "اسلاید جدید — عنوان ایستگاه",
-  "badge": "📍 ایستگاه جدید (۱۴۰۱): عنوان دوره",
-  "back_to_roadmap": true,
-  "nav_buttons": true,
-  "next_text": "ایستگاه بعدی ◀",
+  "station": "cloud",
   "notes": "📌 راهنمای استیج:\n...\n🎙️ نکات کلیدی گفتار:\n..."
 }
 ```
 
-3. If this slide is a roadmap station that should be clickable from Slide 2 (the Highway Roadmap), register its hotspot in `"roadmap_settings" -> "hotspots"`:
+3. If this slide is a station, add the station to the top-level `"stations"` list (order = dots from right to left) and use its id in the slide's `"station"` key. The slide then gets a progress bar with one dot per station: current dot bright, earlier dots half-bright, later dots faint:
 
 ```json
-{
-  "id": "station_new",
-  "name": "ایستگاه جدید",
-  "target_slide_id": "slide_station_new",
-  "box_px": [700, 200, 200, 400],
-  "ref_image_size": [1376, 768]
-}
+{ "id": "cloud", "year": "۱۴۰۱", "title": "معماری کلود" }
 ```
+
+An unknown station id fails validation; a station with no slide only prints a warning.
 
 4. Run the builder:
 ```powershell
 python build_presentation.py
 ```
 
-All next/previous buttons, station badges, and roadmap links are **dynamically resolved by ID** — no hardcoded slide numbers will ever break!
+The progress bar is **resolved by station ID** — no hardcoded slide numbers will ever break!
 
 ---
 
-## 🗺️ How to Update the Career Roadmap Image
+## 🗺️ Career Roadmap Image
 
-If you regenerate or modify `slides/career_roadmap_highway.jpg`:
-1. Save the new image in `slides/career_roadmap_highway.jpg`.
-2. Inspect the new station bounding boxes (e.g., using `PIL` or coordinates).
-3. Update `"box_px": [x, y, width, height]` for each station in `slides_config.json`.
-4. Run:
-```powershell
-python build_presentation.py
-```
+`slides/career_roadmap_highway.jpg` is only a background now. There are no clickable areas on it, so replacing the image needs no coordinates. (A5 will rebuild the map with real PowerPoint text from `stations`.)
 
 ---
 
@@ -93,9 +79,8 @@ python build_presentation.py
 
 ---
 
-## 🔒 File Lock Handling (Windows PowerPoint)
+## 🔒 Output File and File Lock (Windows PowerPoint)
 
-When a PowerPoint `.pptx` file is currently open in Microsoft PowerPoint, Windows locks the file exclusively. The builder handles this gracefully:
-- It attempts to save to `TechTalk_Dinosaurs_Survival_Interactive.pptx`.
-- It automatically updates `TechTalk_Dinosaurs_Survival.pptx`.
-- If the primary file is locked by PowerPoint, it automatically saves a timestamped copy (e.g. `TechTalk_Dinosaurs_Survival_YYYYMMDD_HHMMSS.pptx`) so your progress is never blocked or lost!
+The builder writes exactly one file: `TechTalk_Dinosaurs_Survival.pptx` (or `--output` if given). Older copies (`_Backup`, `_v2`, `_Clean`, `_Interactive`) are not written anymore and are kept only as history.
+
+When that file is open in PowerPoint, Windows locks it. The builder then prints a clear message, exits with a non-zero code, and leaves the file unchanged. Close the file in PowerPoint and run the build again. No timestamped copy is written.

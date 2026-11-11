@@ -6,194 +6,1299 @@
     "width_inch": 13.333,
     "height_inch": 7.5,
     "default_transition": "fade",
+    "font": "Vazirmatn",
     "output_primary": "TechTalk_Dinosaurs_Survival.pptx",
-    "output_interactive": "TechTalk_Dinosaurs_Survival_Interactive.pptx",
     "slides_dir": "slides"
   },
-  "roadmap_settings": {
-    "roadmap_slide_id": "slide_roadmap",
-    "quick_jump": {
-      "target_slide_id": "slide_ai_meteor",
-      "icon": "☄️",
-      "font_size_pt": 14,
-      "bg_color": [26, 16, 37],
-      "border_color": [236, 72, 153]
+  "stations": [
+    {
+      "id": "java",
+      "year": "۱۳۸۹",
+      "title": "جاوا"
     },
-    "hotspots": [
-      {
-        "id": "station_1",
-        "name": "ایستگاه ۱: سال ۱۳۸۸ (Java Developer)",
-        "target_slide_id": "slide_station_1388",
-        "box_px": [40, 280, 175, 480],
-        "ref_image_size": [1376, 768]
-      },
-      {
-        "id": "station_2",
-        "name": "ایستگاه ۲: سال ۱۳۹۴ (Ops & WebLogic)",
-        "target_slide_id": "slide_station_1395",
-        "box_px": [215, 220, 135, 440],
-        "ref_image_size": [1376, 768]
-      },
-      {
-        "id": "station_3",
-        "name": "ایستگاه ۳: سال ۱۳۹۶ (CI/CD & Jenkins)",
-        "target_slide_id": "slide_station_1396",
-        "box_px": [350, 200, 150, 400],
-        "ref_image_size": [1376, 768]
-      },
-      {
-        "id": "station_4",
-        "name": "ایستگاه ۴: سال ۱۳۹۷ (ELK Observability)",
-        "target_slide_id": "slide_station_1397",
-        "box_px": [500, 190, 195, 390],
-        "ref_image_size": [1376, 768]
-      },
-      {
-        "id": "station_5",
-        "name": "ایستگاه ۵: سال ۱۳۹۸ (R&D Ops Lifecycle)",
-        "target_slide_id": "slide_station_1398",
-        "box_px": [700, 180, 235, 400],
-        "ref_image_size": [1376, 768]
-      },
-      {
-        "id": "station_6",
-        "name": "ایستگاه ۶: سال ۱۴۰۰ (Kubernetes Cloud Bank)",
-        "target_slide_id": "slide_station_1400",
-        "box_px": [940, 170, 185, 380],
-        "ref_image_size": [1376, 768]
-      },
-      {
-        "id": "station_7",
-        "name": "ایستگاه ۷: سال ۱۴۰۳+ (AI & ISR Platform)",
-        "target_slide_id": "slide_station_1403",
-        "box_px": [1130, 150, 180, 370],
-        "ref_image_size": [1376, 768]
-      }
-    ]
+    {
+      "id": "ops",
+      "year": "۱۳۹۴",
+      "title": "عملیات"
+    },
+    {
+      "id": "weblogic",
+      "year": "۱۳۹۵",
+      "title": "WebLogic"
+    },
+    {
+      "id": "jenkins",
+      "year": "۱۳۹۶",
+      "title": "Jenkins"
+    },
+    {
+      "id": "elk",
+      "year": "۱۳۹۷",
+      "title": "ELK"
+    },
+    {
+      "id": "rnd",
+      "year": "۱۳۹۸",
+      "title": "R&D"
+    },
+    {
+      "id": "k8s",
+      "year": "۱۴۰۴",
+      "title": "Kubernetes"
+    },
+    {
+      "id": "isr",
+      "year": "امروز",
+      "title": "ISR"
+    }
+  ],
+  "roadmap_settings": {
+    "roadmap_slide_id": "slide_roadmap"
   },
   "slides": [
     {
       "id": "slide_cover",
+      "title": "اسلاید ۱ — کاور",
       "file": "cover_option1_datacenter.jpg",
       "type": "cover",
-      "title": "اسلاید ۱ — افتتاحیه رسمی: دایناسورهای دنیای تک و مهارتِ بقا",
-      "back_to_roadmap": false,
-      "nav_buttons": true,
       "title_overlay": {
         "tag": "🎙️  رویداد ارائـه تخصصـی مهندسـی  |  TECHTALK",
         "title": "دایناسورهای دنیای تک و مهارتِ بقا",
         "subtitle": "روایتی از ۱۶ سال چالش‌های مهندسی، دوقلوهای ترس و هنر تطبیق‌پذیری در عصر هوش مصنوعی",
-        "presenter": "ارائه‌دهنده: علی امانی   •   پاییز ۱۴۰۳"
+        "presenter": "ارائه‌دهنده: علی امانی"
       },
-      "notes": "📌 راهنمای استیج: تصویر تایتل رویداد روی پرده سالن قبل از شروع رسمی سخنرانی قرار دارد.\n\n🎙️ خوش‌آمدگویی و معرفی:\n- سلام و وقت‌بخیر به همگی.\n- معرفی عنوان: دایناسورهای دنیای تک و مهارتِ بقا.\n- ارائه‌دهنده: علی امانی | پاییز ۱۴۰۳.\n- ورود به بحث چالش‌های ۱۶ ساله مهندسی و شروع سفر..."
+      "notes": "- کاور روی پرده است؛ بعد از ورود به اسلاید ۲ می‌رویم.\n- معرفی یک‌جمله‌ای بعد از تیزر گفته می‌شود."
     },
     {
-      "id": "slide_dinosaur_meteor",
+      "id": "slide_teaser",
+      "title": "اسلاید ۲ — تیزر: حلقه‌ی for بدون shutdown",
+      "file": "teaser_corridor_blue.jpg",
+      "text_overlays": [
+        {
+          "text": "for ip in $SERVERS; do ssh $ip \"$CMD\"; done",
+          "position": [
+            0.5,
+            2.7,
+            12.3,
+            1.8
+          ],
+          "size_pt": 28,
+          "color": "FCD34D",
+          "bold": false,
+          "align": "left",
+          "bar": true,
+          "ltr": true
+        }
+      ],
+      "notes": "- IPها را می‌ریختیم تو یه فایل متنی و حلقه یکی‌یکی وصل می‌شد.\n- سؤال از جمع: کی روی پروداکشن دستوری زده که نباید؟\n- یه روز همین حلقه ۷۰ تا سرور یه بانک رو خاموش کرد؛ قصه‌ش وسط ارائه.\n- بعد: سلام و معرفی یک‌جمله‌ای."
+    },
+    {
+      "id": "slide_dinosaur",
+      "title": "اسلاید ۳ — دایناسور",
       "file": "slide2_option_cyber_dinosaur.jpg",
-      "type": "metaphor",
-      "title": "اسلاید ۲ — پرده اول: استعاره ۶۶ میلیون سال پیش — دایناسور صلب سرورها و شهاب‌سنگ تحول",
-      "back_to_roadmap": false,
-      "nav_buttons": true,
-      "notes": "📌 راهنمای استیج: ورود آرام به وسط سن، لبخند، مکث ۲ ثانیه‌ای، نگاه متمرکز به جمعیت و شروع با داستان انقراض و بقا.\n\n🎙️ نکات کلیدی گفتار:\n- ۶۶ میلیون سال پیش و بزرگ‌ترین درس بقا روی سیاره زمین.\n- دایناسورهای غول‌پیکر و صلب: تایتان‌هایی از جنس آهن و رک‌های قدیمی که نمی‌توانند از جای خود تکان بخورند.\n- فرود شهاب‌سنگ ناگزیر تحول و انقراض غول‌ها.\n- در برابر پستانداران کوچک، چابک و هوشیاری که روی خطوط ارتباطی سریع حرکت می‌کنند و بقا می‌یابند.\n- تعریف دایناسور بودن در دنیای مهندسی: کشیدن دیوار بتنی دور کدهای قدیمی و حاشیه امن کاذب."
+      "text_overlays": [
+        {
+          "text": "۶۶ میلیون سال پیش",
+          "position": "bottom",
+          "size_pt": 36,
+          "color": "FFFFFF",
+          "bold": true,
+          "align": "center",
+          "bar": true
+        }
+      ],
+      "notes": "- شهاب‌سنگ، خلیج مکزیک؛ بدن بزرگ، انرژی زیاد، غذای مخصوص.\n- پستانداران: کوچک، کم‌خرج، هر چی بود می‌خوردن.\n- مهندس‌ها هم گاهی دایناسوریم: «به این سیستم دست نزنید، قلقش دست منه.»"
     },
     {
-      "id": "slide_twins_of_fear",
+      "id": "slide_twins",
+      "title": "اسلاید ۴ — دوقلوهای ترس",
       "file": "slide2_option1_twins_of_fear.jpg",
-      "type": "metaphor",
-      "title": "اسلاید ۳ — پرده اول (ادامه): دوقلوهای ترس در ۱۶ سال مسیر مهندسی",
-      "back_to_roadmap": false,
-      "nav_buttons": true,
-      "notes": "📌 راهنمای استیج: گام برداشتن در مرکز سن، لحن صمیمی و باز کردن راز روانی مقاومت در برابر تغییر.\n\n🎙️ نکات کلیدی گفتار:\n- چرا مهندسان تبدیل به دایناسور می‌شوند؟ ریشه در «دوقلوهای ترس» است:\n  ۱. قل اول (ستون چپ): ترس از اشتباه کردن و خطا در پروداکشن زنده (Fear of Incompetence).\n  ۲. قل دوم (ستون راست): ترس از بی‌مصرف شدن و حذف از بازار در عصر ابزارهای نو و هوش مصنوعی (Fear of Irrelevance).\n- بزرگراه ۱۶ ساله مسیر شغلی، روایت من از نحوه دست‌وپنجه نرم کردن با این دو ترس است..."
+      "text_overlays": [
+        {
+          "text": "ترس از خراب‌کردن",
+          "position": [
+            2.02,
+            0.5,
+            3.9,
+            1.1
+          ],
+          "size_pt": 30,
+          "color": "FDBA74",
+          "bold": true,
+          "align": "center",
+          "bar": true
+        },
+        {
+          "text": "ترس از حذف‌شدن",
+          "position": [
+            7.45,
+            0.5,
+            3.9,
+            1.1
+          ],
+          "size_pt": 30,
+          "color": "67E8F9",
+          "bold": true,
+          "align": "center",
+          "bar": true
+        }
+      ],
+      "notes": "- قل اول: ترس از خراب‌کردن. راست می‌گه؛ خراب می‌کنیم ولی آخر کار نیست.\n- قل دوم: ترس از حذف‌شدن\n- ۱۶ سال دنبال من بودن."
     },
     {
       "id": "slide_roadmap",
-      "file": "career_roadmap_highway.jpg",
+      "file": "cover_option2_keynote_waves.jpg",
       "type": "roadmap",
-      "title": "اسلاید ۴ — نقشه راه ۱۶ ساله: از برنامه‌نویسی جاوا تا زیست‌بوم هوش مصنوعی (۱۳۸۸ تا ۱۴۰۳)",
-      "back_to_roadmap": false,
-      "nav_buttons": true,
-      "notes": "📌 راهنمای استیج: ایستادن در سمت چپ سن، اشاره دست به امتداد جاده نوری، ایجاد حس یک سفر پرماجرا.\n\n🎙️ نکات کلیدی گفتار:\n- این بزرگراه ۱۶ ساله، نقشه راه عبور من از این دو ترس در دنیای واقعی مهندسی است.\n- ۷ ایستگاه کلیدی و ۷ پوست‌اندازی بزرگ:\n  • ۱۳۸۸: دژ جاوا و برنامه‌نویسی ناب\n  • ۱۳۹۴: تابوشکنی و جهش جسورانه به دنیای عملیات\n  • ۱۳۹۶: میدان جنگ ابزارها، حلقه For و ضرورت Jenkins\n  • ۱۳۹۷: تجمیع داده‌ها و لاگ‌ها در پلتفرم ELK\n  • ۱۳۹۸: تشکیل تیم R&D و قانون طلایی «بساز و رها کن»\n  • ۱۴۰۰: نقطه اوج و بحران ساعت ۶ صبح بانک در کوبرنتیز\n  • ۱۴۰۳+: شهاب‌سنگ AI و پلتفرم خودکارسازی هوشمند ISR\n- تعامل: با کلیک روی هر ایستگاه در بزرگراه، وارد همان سال می‌شویم."
+      "text_overlays": [
+        {
+          "text": "نقشه‌ی راه: ۱۶ سال، هشت ایستگاه",
+          "position": "top-right",
+          "width_in": 12.1,
+          "height_in": 1.2,
+          "size_pt": 40,
+          "bold": true,
+          "align": "center"
+        }
+      ],
+      "title": "اسلاید ۵ — نقشه‌ی راه: هشت ایستگاه (از ۱۳۸۹ تا امروز)",
+      "notes": "- ۱۶ سال، هشت ایستگاه، از جاوا تا ISR.\n- ایستگاه آخر امروز است.\n- بریم سراغ اولی."
     },
     {
-      "id": "slide_station_1388",
+      "id": "slide_java",
+      "title": "اسلاید ۶ — ۱۳۸۹: جاوا",
       "file": "slide2.jpg",
-      "type": "station",
-      "title": "اسلاید ۵ — پرده دوم (۱۳۸۸ تا ۱۳۹۴): امپراتوری جاوا و ورود به دنیای عملیات",
-      "back_to_roadmap": true,
-      "nav_buttons": true,
-      "notes": "📌 راهنمای استیج: حرکت به سمت راست سن، لحن صمیمی و نوستالژیک با طنز خودزنی مهندسی.\n\n🎙️ نکات کلیدی گفتار:\n- ۶ سال برنامه‌نویسی ناب و خالص جاوا از سال ۸۸ تا ۹۴ در اوج حاشیه امن.\n- سال ۹۴ و تصمیم به رفتن به عملیات (برچسب افت کلاس و خودکشی شغلی در نگاه برنامه‌نویس‌های آن زمان).\n- بیدار شدن دوقلوهای ترس: ترس از دستور اشتباه در پروداکشن زنده + ترس از نابودی هویت دولوپری.\n- ورود به عملیات با ذهن و سلاح یک برنامه‌نویس.\n- ایده آقای شریفی (Query Executor) و توسعه قابلیت SSH و لایو تیل (Live Tail) لاگ‌ها با جاوا توسط علی؛ جمع شدن صف پشت در عملیات."
+      "station": "java",
+      "text_overlays": [
+        {
+          "text": "۱۳۸۹",
+          "position": "top-right",
+          "size_pt": 44,
+          "color": "FBBF24",
+          "bold": true,
+          "align": "center",
+          "width_in": 3.0,
+          "height_in": 1.0,
+          "bar": true
+        },
+        {
+          "text": "پنج سال فقط کد",
+          "position": [
+            0.9,
+            1.7,
+            11.5,
+            0.9
+          ],
+          "size_pt": 32,
+          "color": "FFFFFF",
+          "bold": true,
+          "align": "center",
+          "bar": true
+        }
+      ],
+      "notes": "- ۱۳۸۹ شروع با جاوا؛ ۵ سال (۸۹ تا ۹۴) فقط کد.\n- همه من رو دولوپر جاوا می‌شناختن؛ حاشیه‌ی امن.\n- ۹۴: تصمیم رفتن به عملیات؛ «حیفِ پنج سال سابقه نیست؟»"
     },
     {
-      "id": "slide_station_1395",
+      "id": "slide_ops",
+      "title": "اسلاید ۷ — ۱۳۹۴: عملیات و Query Executor",
+      "file": "query_executor.jpg",
+      "station": "ops",
+      "text_overlays": [
+        {
+          "text": "۱۳۹۴",
+          "position": "top-right",
+          "size_pt": 44,
+          "color": "FBBF24",
+          "bold": true,
+          "align": "center",
+          "width_in": 3.0,
+          "height_in": 1.0,
+          "bar": true
+        },
+        {
+          "text": "Query Executor",
+          "position": [
+            0.9,
+            1.7,
+            11.5,
+            0.9
+          ],
+          "size_pt": 32,
+          "color": "FFFFFF",
+          "bold": true,
+          "align": "center",
+          "bar": true
+        }
+      ],
+      "notes": "- اوایل ۹۴ دوقلوها اومدن: قل اول: یه دستور اشتباه و سرویس می‌خوابه. قل دوم: هویت دولوپری‌ت نابود می‌شه.\n- صف کوئری و لاگ پشت در عملیات؛ آقای شریفی ایده‌ی Query Executor رو داد، پیاده‌سازی با جاوا (SSH، دانلود لاگ، Live Tail).\n- قل اول راست گفت: الگوریتم لودبالانسر رو روی سیستم لایو عوض کردم، بانک قطع شد.\n- قل دوم دروغ گفت."
+    },
+    {
+      "id": "slide_alter",
+      "title": "اسلاید ۷ (مرحله‌ی دوم) — ALTER USER: کوئری‌ای که قرار بود زده شود",
+      "file": "teaser_corridor_blue.jpg",
+      "station": "ops",
+      "text_overlays": [
+        {
+          "text": "۱۳۹۴",
+          "position": "top-right",
+          "size_pt": 44,
+          "color": "FBBF24",
+          "bold": true,
+          "align": "center",
+          "width_in": 3.0,
+          "height_in": 1.0,
+          "bar": true
+        },
+        {
+          "text": "ALTER USER dev_user IDENTIFIED BY \"********\";",
+          "position": [
+            0.5,
+            2.2,
+            12.3,
+            1.0
+          ],
+          "size_pt": 28,
+          "color": "FCD34D",
+          "bold": false,
+          "align": "left",
+          "bar": true,
+          "ltr": true
+        }
+      ],
+      "notes": "- می‌خواستیم پسورد یوزر Query Executor رو تو دیتابیس عوض کنیم. یه خط کوئری.\n- یکی از دقیق‌ترین و محتاط‌ترین آدم‌های تیم وصل شد به دیتابیس اصلی."
+    },
+    {
+      "id": "slide_alter_2",
+      "title": "اسلاید ۷ (مرحله‌ی سوم) — ALTER USER: کوئری‌ای که زده شد",
+      "file": "teaser_corridor_blue.jpg",
+      "station": "ops",
+      "text_overlays": [
+        {
+          "text": "۱۳۹۴",
+          "position": "top-right",
+          "size_pt": 44,
+          "color": "FBBF24",
+          "bold": true,
+          "align": "center",
+          "width_in": 3.0,
+          "height_in": 1.0,
+          "bar": true
+        },
+        {
+          "text": "ALTER USER dev_user IDENTIFIED BY \"********\";",
+          "position": [
+            0.5,
+            2.2,
+            12.3,
+            1.0
+          ],
+          "size_pt": 28,
+          "color": "FCD34D",
+          "bold": false,
+          "align": "left",
+          "bar": true,
+          "ltr": true
+        },
+        {
+          "text": "ALTER USER main_user IDENTIFIED BY \"********\";",
+          "position": [
+            0.5,
+            3.5,
+            12.3,
+            1.0
+          ],
+          "size_pt": 28,
+          "color": "F87171",
+          "bold": false,
+          "align": "left",
+          "bar": true,
+          "ltr": true
+        },
+        {
+          "text": "دیتابیس اصلی قطع شد؛ بانک یک ساعت پایین",
+          "position": [
+            0.9,
+            5.0,
+            11.5,
+            0.9
+          ],
+          "size_pt": 30,
+          "color": "FFFFFF",
+          "bold": true,
+          "align": "center",
+          "bar": true
+        }
+      ],
+      "notes": "- به‌جای یوزر dev، پسورد یوزر اصلیِ دیتابیس اصلی عوض شد.\n- بانک یه ساعت پایین بود؛ دیتابیس رو پایین و بالا کردیم.\n- مشکل آدم نیست؛ مشکل خطیه که با دست روی پروداکشن می‌زنیم.\n- بعد: اشتباه خودم با لودبالانسر تو پروژه‌ی سپه.",
+      "transition": "none"
+    },
+    {
+      "id": "slide_ops_2",
+      "title": "اسلاید ۷ (مرحله‌ی دوم): درس‌آموخته",
+      "file": "query_executor.jpg",
+      "station": "ops",
+      "text_overlays": [
+        {
+          "text": "۱۳۹۴",
+          "position": "top-right",
+          "size_pt": 44,
+          "color": "FBBF24",
+          "bold": true,
+          "align": "center",
+          "width_in": 3.0,
+          "height_in": 1.0,
+          "bar": true
+        },
+        {
+          "text": "Query Executor",
+          "position": [
+            0.9,
+            1.7,
+            11.5,
+            0.9
+          ],
+          "size_pt": 32,
+          "color": "FFFFFF",
+          "bold": true,
+          "align": "center",
+          "bar": true
+        },
+        {
+          "text": "ارزش وقتی ساخته می‌شود که تخصص برنامه‌نویسی با واقعیت پروداکشن روبه‌رو شود.",
+          "position": [
+            0.9,
+            5.3,
+            11.5,
+            1.6
+          ],
+          "size_pt": 28,
+          "color": "FFFFFF",
+          "bold": false,
+          "align": "center",
+          "bar": true
+        }
+      ],
+      "notes": "- ادامه‌ی اسلاید قبل.\n- درس: ارزش وقتی ساخته می‌شود که تخصص با واقعیت پروداکشن روبه‌رو شود."
+    },
+    {
+      "id": "slide_weblogic",
+      "title": "اسلاید ۸ — ۱۳۹۵: وب‌لاجیک",
       "file": "slide3.jpg",
-      "type": "station",
-      "title": "اسلاید ۶ — پرده سوم (۱۳۹۵): وب‌لاجیک (WebLogic) در اسکیل Enterprise و ماژول Authenticator",
-      "back_to_roadmap": true,
-      "nav_buttons": true,
-      "notes": "📌 راهنمای استیج: قدم زدن روی سن، روایت پرانرژی میدان جنگ ابزارها.\n\n🎙️ نکات کلیدی گفتار:\n- سال ۱۳۹۵: نیاز به مهاجرت از تام‌کت به وب‌لاجیک برای پایداری و High Availability واقعی در اسکیل بانکی.\n- مقاومت تیم تولید: «وب‌لاجیک سخته و ناشناخته است، ما دست نمی‌زنیم!»\n- خواندن ۲ الی ۳ هزار صفحه داکیومنت سنگین انگلیسی وب‌لاجیک با زبان ضعیف و دیکشنری.\n- نوشتن ماژول احراز هویت اختصاصی وب‌لاجیک و بالا آمدن سیستم.\n- درس بزرگ: بعدها با آمدن Cloud-Native فهمیدیم حتی وب‌لاجیک با آن عظمت هم دائمی نیست و باید رها شود."
+      "station": "weblogic",
+      "text_overlays": [
+        {
+          "text": "۱۳۹۵",
+          "position": "top-right",
+          "size_pt": 44,
+          "color": "FBBF24",
+          "bold": true,
+          "align": "center",
+          "width_in": 3.0,
+          "height_in": 1.0,
+          "bar": true
+        }
+      ],
+      "notes": "- تیم توسعه روی تام‌کت؛ ما وب‌لاجیک رو انتخاب کردیم: اسکیل‌پذیر، پکیج کامل‌تر، کلاستر.\n- ۴ سرور ۶۴ گیگ؛ یک بار ~۸۰٪ بار کل CMS روش.\n- ماژول احراز هویت رو ما بازنویسی کردیم؛ ۲ تا ۳ هزار صفحه داکیومنت با دیکشنری."
     },
     {
-      "id": "slide_station_1396",
+      "id": "slide_weblogic_2",
+      "title": "اسلاید ۸ (مرحله‌ی دوم): کنار گذاشته شد",
+      "file": "slide3.jpg",
+      "station": "weblogic",
+      "text_overlays": [
+        {
+          "text": "۱۳۹۵",
+          "position": "top-right",
+          "size_pt": 44,
+          "color": "FBBF24",
+          "bold": true,
+          "align": "center",
+          "width_in": 3.0,
+          "height_in": 1.0,
+          "bar": true
+        },
+        {
+          "text": "سال ۱۴۰۰ کنار گذاشته شد",
+          "position": [
+            1.4,
+            2.6,
+            10.5,
+            1.4
+          ],
+          "size_pt": 44,
+          "color": "F87171",
+          "bold": true,
+          "align": "center",
+          "bar": true
+        },
+        {
+          "text": "هر ابزار برای یک دوره است؛ دیر یا زود کنارش می‌گذاریم.",
+          "position": [
+            0.9,
+            5.3,
+            11.5,
+            1.6
+          ],
+          "size_pt": 28,
+          "color": "FFFFFF",
+          "bold": false,
+          "align": "center",
+          "bar": true
+        }
+      ],
+      "transition": "none",
+      "notes": "- ادامه‌ی اسلاید قبل.\n- سال ۱۴۰۰ تو پروژه‌ی سپه وب‌لاجیک رو کنار گذاشتیم.\n- درس: هر ابزار برای یک دوره است."
+    },
+    {
+      "id": "slide_loop",
+      "title": "اسلاید ۹ — ۱۳۹۶: حلقه‌ی for کامل",
       "file": "slide4.jpg",
-      "type": "station",
-      "title": "اسلاید ۷ — پرده سوم (۱۳۹۶): حلقه For مرگبار و ضرورت اتوماسیون با Jenkins",
-      "back_to_roadmap": true,
-      "nav_buttons": true,
-      "notes": "📌 راهنمای استیج: لبخند و لحن طنزآمیز، همراه کردن تماشاگران با استرس‌های واقعی پروداکشن.\n\n🎙️ نکات کلیدی گفتار:\n- سال ۱۳۹۶: مهاجرت از NFS به کپی مستقیم با اسکریپت و حلقه for روی لیست IP سرورها.\n- فاجعه ارسال اشتباهی دستور shutdown داخل حلقه for و خاموش شدن یکی‌یکی سرورهای دیتاسنتر!\n- ضرورت اتوماسیون با Git و Jenkins و مقاومت شدید همکاران از ترس بیکار شدن و حذف شدن.\n- نوشتن فریم‌ورک اتوماسیون با زبان Groovy در جنکینز برای راحت کردن کار بچه‌ها، نه گرفتن جای آن‌ها."
+      "station": "jenkins",
+      "text_overlays": [
+        {
+          "text": "۱۳۹۶",
+          "position": "top-right",
+          "size_pt": 44,
+          "color": "FBBF24",
+          "bold": true,
+          "align": "center",
+          "width_in": 3.0,
+          "height_in": 1.0,
+          "bar": true
+        }
+      ],
+      "notes": "- انتشار سورس: اول NFS، جواب نداد؛ کپی مستقیم روی سرورها. ما هنوز Ansible نداشتیم.\n- همون حلقه‌ی اول ارائه، این بار با shutdown.\n- یکی از ما اشتباهاً دستور رو فرستاد؛ حلقه تأیید نمی‌گیره."
     },
     {
-      "id": "slide_station_1397",
+      "id": "slide_loop_2",
+      "title": "اسلاید ۹ (مرحله‌ی دوم): نتیجه‌ی حلقه",
+      "file": "slide4.jpg",
+      "station": "jenkins",
+      "text_overlays": [
+        {
+          "text": "۱۳۹۶",
+          "position": "top-right",
+          "size_pt": 44,
+          "color": "FBBF24",
+          "bold": true,
+          "align": "center",
+          "width_in": 3.0,
+          "height_in": 1.0,
+          "bar": true
+        },
+        {
+          "text": "۷۰ سرور خاموش شد؛ نیم‌ساعت قطعی",
+          "position": [
+            0.9,
+            1.7,
+            11.5,
+            0.9
+          ],
+          "size_pt": 32,
+          "color": "FFFFFF",
+          "bold": true,
+          "align": "center",
+          "bar": true
+        }
+      ],
+      "transition": "none",
+      "notes": "- ادامه‌ی اسلاید قبل.\n- ۷۰ سرور، بانک نیم ساعت قطع. سرور خاموش رو با SSH نمی‌شه روشن کرد؛ یه نفر رفت دیتاسنتر.\n- مشکل اون آدم نبود؛ دستور بدون بازبینی و تکرارناپذیر بود."
+    },
+    {
+      "id": "slide_jenkins",
+      "title": "اسلاید ۱۰ — ۱۳۹۶: جنکینز",
+      "file": "jenkins_pipeline.jpg",
+      "station": "jenkins",
+      "text_overlays": [
+        {
+          "text": "۱۳۹۶",
+          "position": "top-right",
+          "size_pt": 44,
+          "color": "FBBF24",
+          "bold": true,
+          "align": "center",
+          "width_in": 3.0,
+          "height_in": 1.0,
+          "bar": true
+        },
+        {
+          "text": "Git و review و پایپ‌لاین",
+          "position": [
+            0.9,
+            1.7,
+            11.5,
+            0.9
+          ],
+          "size_pt": 32,
+          "color": "FFFFFF",
+          "bold": true,
+          "align": "center",
+          "bar": true
+        }
+      ],
+      "notes": "- اسکریپت‌ها رفتن روی Git، پایپ‌لاین انتشار با جنکینز؛ لاگ دقیق برای هر سرور.\n- شیش تا بانک از یه مستر.\n- مقاومت قابل فهم بود؛ قل دوم سراغ همه‌ی ما اومد.\n- با Groovy فریم‌ورکی نوشتیم که کار بچه‌ها رو راحت کنه."
+    },
+    {
+      "id": "slide_jenkins_2",
+      "title": "اسلاید ۱۰ (مرحله‌ی دوم): درس‌آموخته",
+      "file": "jenkins_pipeline.jpg",
+      "station": "jenkins",
+      "text_overlays": [
+        {
+          "text": "۱۳۹۶",
+          "position": "top-right",
+          "size_pt": 44,
+          "color": "FBBF24",
+          "bold": true,
+          "align": "center",
+          "width_in": 3.0,
+          "height_in": 1.0,
+          "bar": true
+        },
+        {
+          "text": "Git و review و پایپ‌لاین",
+          "position": [
+            0.9,
+            1.7,
+            11.5,
+            0.9
+          ],
+          "size_pt": 32,
+          "color": "FFFFFF",
+          "bold": true,
+          "align": "center",
+          "bar": true
+        },
+        {
+          "text": "مشکل دستورِ بدون بازبینی و تکرارناپذیر روی پروداکشن بود؛ Git و review و پایپ‌لاین جوابش بود.",
+          "position": [
+            0.9,
+            5.3,
+            11.5,
+            1.6
+          ],
+          "size_pt": 28,
+          "color": "FFFFFF",
+          "bold": false,
+          "align": "center",
+          "bar": true
+        }
+      ],
+      "transition": "none",
+      "notes": "- ادامه‌ی اسلاید قبل."
+    },
+    {
+      "id": "slide_elk",
+      "title": "اسلاید ۱۱ — ۱۳۹۷: ELK",
       "file": "slide5.jpg",
-      "type": "station",
-      "title": "اسلاید ۸ — پرده سوم (۱۳۹۷): نجات از جزیره‌های لاگ و مهاجرت به ELK",
-      "back_to_roadmap": true,
-      "nav_buttons": true,
-      "notes": "📌 راهنمای استیج: لحن رو به جلو، نشان دادن غلبه بر هرج‌ومرج داده‌ها.\n\n🎙️ نکات کلیدی گفتار:\n- سال ۱۳۹۷: پایان دوران SSH زدن دستی به ۲۰ سرور مختلف برای پیدا کردن یک خطا.\n- نوشتن کانفیگ پیچیده ۵۰۰-۶۰۰ خطی Filebeat برای هدایت متمرکز تمام لاگ‌ها به ELK.\n- نفس کشیدن سرورها و شکل‌گیری نیاز به یک تحول عمیق‌تر در ساختار سازمان."
+      "station": "elk",
+      "text_overlays": [
+        {
+          "text": "۱۳۹۷",
+          "position": "top-right",
+          "size_pt": 44,
+          "color": "FBBF24",
+          "bold": true,
+          "align": "center",
+          "width_in": 3.0,
+          "height_in": 1.0,
+          "bar": true
+        }
+      ],
+      "notes": "- هر سرور یه گوشه لاگ می‌ریخت؛ برای یه خطا باید دستی SSH می‌زدیم.\n- تصمیم: لاگ‌ها یک‌جا جمع بشن.\n- کانفیگ Filebeat ۵۰۰ ۶۰۰ خطی شد چون یه کانفیگ واحد همه‌ی سرویس‌ها رو پوشش می‌داد."
     },
     {
-      "id": "slide_station_1398",
+      "id": "slide_elk_2",
+      "title": "اسلاید ۱۱ (مرحله‌ی دوم): درس‌آموخته",
+      "file": "slide5.jpg",
+      "station": "elk",
+      "text_overlays": [
+        {
+          "text": "۱۳۹۷",
+          "position": "top-right",
+          "size_pt": 44,
+          "color": "FBBF24",
+          "bold": true,
+          "align": "center",
+          "width_in": 3.0,
+          "height_in": 1.0,
+          "bar": true
+        },
+        {
+          "text": "لاگ باید یک‌جا دیده شود، نه روی تک‌تک سرورها.",
+          "position": [
+            0.9,
+            5.3,
+            11.5,
+            1.6
+          ],
+          "size_pt": 28,
+          "color": "FFFFFF",
+          "bold": false,
+          "align": "center",
+          "bar": true
+        }
+      ],
+      "transition": "none",
+      "notes": "- ادامه‌ی اسلاید قبل.\n- درس: لاگ باید یک‌جا دیده شود."
+    },
+    {
+      "id": "slide_rnd",
+      "title": "اسلاید ۱۲ — ۱۳۹۸: چرخه‌ی R&D",
       "file": "slide6.jpg",
-      "type": "station",
-      "title": "اسلاید ۹ — پرده چهارم (۱۳۹۸ تا ۱۴۰۰): تیم تحقیق و توسعه (R&D Ops) و قانون طلایی «رها کردن»",
-      "back_to_roadmap": true,
-      "nav_buttons": true,
-      "notes": "📌 راهنمای استیج: ایستادن در مرکز سن، لحن مقتدر در بیان اصول سازمانی، سپس لحن صمیمی و صادقانه در روایت ترس درونی.\n\n🎙️ نکات کلیدی گفتار:\n- سال ۱۳۹۸ و ابتکار آقای شریفی: تشکیل «تیم تولیدِ عملیات» (۴ برنامه‌نویس باسابقه + ۱ مهندس دوآپس) و تکامل به R&D Ops.\n- چرخه ۵ مرحله‌ای: ۱. تحلیل نیاز و فیدبک ۲. تحقیق و POC ۳. مستندسازی ۴. آماده‌سازی پروداکشن ۵. آموزش و تحویل قطعی به عملیات.\n- قانون طلایی سازمان: «حق ندارید هیچ سرویسی که بالا می‌آورید رو خودتون نگه دارید! بسازید، تحویل بدید و رها کنید!» (تفکیک کیفیت از مالکیت).\n- سال ۱۳۹۹ و مواجهه با قل دوم ترس: دیدن همکار جوانی که پایپ‌لاین‌های من رو سریع‌تر بازنویسی می‌کرد؛ غلبه بر وسوسه انحصارطلبی و رفتن سراغ ساخت ابزار توپولوژی خودکار میکروسرویس‌ها."
+      "station": "rnd",
+      "text_overlays": [
+        {
+          "text": "۱۳۹۸",
+          "position": "top-right",
+          "size_pt": 44,
+          "color": "FBBF24",
+          "bold": true,
+          "align": "center",
+          "width_in": 3.0,
+          "height_in": 1.0,
+          "bar": true
+        }
+      ],
+      "notes": "- ۹۸: عملیات دو بخش شد؛ هسته‌ی ۵ نفره: ۴ برنامه‌نویس و ۱ دوآپس = R&D Ops.\n- پنج مرحله: نیاز، تحقیق و POC، مستندسازی، آماده‌سازی پروداکشن، آموزش و تحویل.\n- Kafka، ActiveMQ، ELK، Kubernetes از همین مسیر رفتن."
     },
     {
-      "id": "slide_station_1400",
+      "id": "slide_rule",
+      "title": "اسلاید ۱۳ — بساز، تحویل بده، رها کن",
+      "file": "handover.jpg",
+      "station": "rnd",
+      "text_overlays": [
+        {
+          "text": "۱۳۹۸",
+          "position": "top-right",
+          "size_pt": 44,
+          "color": "FBBF24",
+          "bold": true,
+          "align": "center",
+          "width_in": 3.0,
+          "height_in": 1.0,
+          "bar": true
+        },
+        {
+          "text": "بساز، تحویل بده، رها کن",
+          "position": [
+            0.9,
+            1.3,
+            11.5,
+            1.6
+          ],
+          "size_pt": 60,
+          "color": "FFFFFF",
+          "bold": true,
+          "align": "center"
+        }
+      ],
+      "notes": "- تحویل همراه آموزش، سند و آماده‌سازی پروداکشن؛ بعدش R&D پشتیبان فنی (enabling team)؛ پرت‌کردن کار روی سر عملیات نیست.\n- کیفیت مال ماست، مالکیت نه.\n- اولش سخت بود؛ یکی به سیستمش «بچه‌م» می‌گفت."
+    },
+    {
+      "id": "slide_rule_2",
+      "title": "اسلاید ۱۳ (مرحله‌ی دوم): درس‌آموخته",
+      "file": "handover.jpg",
+      "station": "rnd",
+      "text_overlays": [
+        {
+          "text": "۱۳۹۸",
+          "position": "top-right",
+          "size_pt": 44,
+          "color": "FBBF24",
+          "bold": true,
+          "align": "center",
+          "width_in": 3.0,
+          "height_in": 1.0,
+          "bar": true
+        },
+        {
+          "text": "بساز، تحویل بده، رها کن",
+          "position": [
+            0.9,
+            1.3,
+            11.5,
+            1.6
+          ],
+          "size_pt": 60,
+          "color": "FFFFFF",
+          "bold": true,
+          "align": "center"
+        },
+        {
+          "text": "کیفیت مال ماست، مالکیت نه.",
+          "position": [
+            0.9,
+            3.0,
+            11.5,
+            0.9
+          ],
+          "size_pt": 28,
+          "color": "FFFFFF",
+          "bold": false,
+          "align": "center",
+          "bar": false
+        }
+      ],
+      "transition": "none",
+      "notes": "- ادامه‌ی اسلاید قبل.\n- درس: کیفیت مال ماست، مالکیت نه."
+    },
+    {
+      "id": "slide_99",
+      "title": "اسلاید ۱۴ — ۱۳۹۹: قل دوم",
+      "file": null,
+      "background": "000000",
+      "station": "rnd",
+      "text_overlays": [
+        {
+          "text": "۱۳۹۹",
+          "position": "top-right",
+          "size_pt": 44,
+          "color": "FBBF24",
+          "bold": true,
+          "align": "center",
+          "width_in": 3.0,
+          "height_in": 1.0,
+          "bar": true
+        },
+        {
+          "text": "فردا صبح این شرکت چرا باید به تو حقوق بده؟",
+          "position": [
+            0.9,
+            2.2,
+            11.5,
+            2.4
+          ],
+          "size_pt": 44,
+          "color": "FFFFFF",
+          "bold": true,
+          "align": "center"
+        }
+      ],
+      "notes": "- یه عصر، همکار جدید داشت پایپ‌لاین‌هایی رو بازنویسی می‌کرد که تا دیروز کار من بود؛ سریع‌تر و تمیزتر.\n- قل دوم همین جمله رو گفت.\n- وسوسه: کدت رو قایم کنی؛ همین‌جا دایناسور می‌شیم."
+    },
+    {
+      "id": "slide_99_2",
+      "title": "اسلاید ۱۴ (مرحله‌ی دوم): درس‌آموخته",
+      "file": null,
+      "background": "000000",
+      "station": "rnd",
+      "text_overlays": [
+        {
+          "text": "۱۳۹۹",
+          "position": "top-right",
+          "size_pt": 44,
+          "color": "FBBF24",
+          "bold": true,
+          "align": "center",
+          "width_in": 3.0,
+          "height_in": 1.0,
+          "bar": true
+        },
+        {
+          "text": "فردا صبح این شرکت چرا باید به تو حقوق بده؟",
+          "position": [
+            0.9,
+            2.2,
+            11.5,
+            2.4
+          ],
+          "size_pt": 44,
+          "color": "FFFFFF",
+          "bold": true,
+          "align": "center"
+        },
+        {
+          "text": "ارزش ما کدی نیست که دیروز نوشتیم.",
+          "position": [
+            0.9,
+            5.3,
+            11.5,
+            1.6
+          ],
+          "size_pt": 28,
+          "color": "FFFFFF",
+          "bold": false,
+          "align": "center",
+          "bar": true
+        }
+      ],
+      "transition": "none",
+      "notes": "- ادامه‌ی اسلاید قبل.\n- من اون پایپ‌لاین نیستم؛ همکارم رو تشویق کردم، کار رو سپردم، رفتم سراغ معماری کلی و ELK."
+    },
+    {
+      "id": "slide_1400",
+      "title": "اسلاید ۱۵ — ۱۴۰۴: حادثه",
       "file": "slide7.jpg",
-      "type": "station",
-      "title": "اسلاید ۱۰ — پرده پنجم (سال ۱۴۰۰ - نقطه اوج): ساعت ۰۶:۰۰ صبح بانک و امتحان نهایی",
-      "back_to_roadmap": true,
-      "nav_buttons": true,
-      "notes": "📌 راهنمای استیج: ضربان صدا بالا، ایجاد حس تعلیق و هیجان در سالن.\n\n🎙️ نکات کلیدی گفتار:\n- سال ۱۴۰۰: ۳ سال برنامه‌ریزی محتاطانه برای مهاجرت به کوبرنتیز، اما وقوع اینسیدنت فاجعه‌بار و خوابیدن زیرساخت سنتی.\n- فشرده شدن پروژه ۳ ساله در ۳ شبانه‌روز بی‌خوابی مطلق و مهاجرت بیگ‌بنگ Core بانک به کوبرنتیز.\n- ساعت ۶:۱۵ صبح، لرزش دست روی کیبورد قبل از باز شدن شعب بانک و هجوم دوباره دوقلوهای ترس.\n- غلبه بر فلج ذهنی با تمرکز روی لاگ‌ها و قدم‌های کوچک؛ ساعت ۶:۳۰ صبح، سبز ماندن لاگ‌ها و نجات سیستم!"
+      "station": "k8s",
+      "text_overlays": [
+        {
+          "text": "۱۴۰۴",
+          "position": "top-right",
+          "size_pt": 44,
+          "color": "FBBF24",
+          "bold": true,
+          "align": "center",
+          "width_in": 3.0,
+          "height_in": 1.0,
+          "bar": true
+        },
+        {
+          "text": "سه سال آماده‌سازی؛ سه شب مهاجرت",
+          "position": "bottom",
+          "size_pt": 36,
+          "color": "FFFFFF",
+          "bold": true,
+          "align": "center",
+          "bar": true
+        }
+      ],
+      "notes": "- ۳ سال آماده‌سازی برای کوبرنتیز (داکرفایل، دیپلویمنت، آموزش) ولی مهاجرت نکرده بودیم.\n- اینسیدنت: همه‌چیز خوابید. معاونت: مهاجرت. بیگ‌بنگ، جز ویندوزی‌ها.\n- بدترین لحظه: اپ اصلی بالا نمی‌اومد؛ علتش یه دسترسی بود."
     },
     {
-      "id": "slide_station_1403",
+      "id": "slide_nights",
+      "title": "اسلاید ۱۵ (مرحله‌ی دوم) — ۱۴۰۴: سه شب مهاجرت",
+      "file": "migration_three_nights.jpg",
+      "station": "k8s",
+      "text_overlays": [
+        {
+          "text": "۱۴۰۴",
+          "position": "top-right",
+          "size_pt": 44,
+          "color": "FBBF24",
+          "bold": true,
+          "align": "center",
+          "width_in": 3.0,
+          "height_in": 1.0,
+          "bar": true
+        },
+        {
+          "text": "سه شب؛ سه کلاستر",
+          "position": [
+            0.9,
+            1.2,
+            11.5,
+            0.9
+          ],
+          "size_pt": 36,
+          "color": "FFFFFF",
+          "bold": true,
+          "align": "center",
+          "bar": true
+        }
+      ],
+      "notes": "- اولین مسئله معماری بود: سرویس‌ها چطور با هم حرف بزنن. سه کلاستر و یه استاندارد ارتباطی.\n- نکسوس: همه‌ی ورکرها با هم ایمیج می‌خواستن؛ پهنای باند سرور نکسوس پر شد.\n- دیتابیس‌ها سر جاشون موندن؛ چند اپ stateful با کمک R&D تو کلاستر بالا اومد.\n- بدترین لحظه: اپ اصلی بالا نمی‌اومد. آخرش یه دسترسی بود."
+    },
+    {
+      "id": "slide_0600",
+      "title": "اسلاید ۱۶ (مرحله‌ی اول) — ۶:۰۰",
+      "file": "slide7.jpg",
+      "station": "k8s",
+      "text_overlays": [
+        {
+          "text": "۱۴۰۴",
+          "position": "top-right",
+          "size_pt": 44,
+          "color": "FBBF24",
+          "bold": true,
+          "align": "center",
+          "width_in": 3.0,
+          "height_in": 1.0,
+          "bar": true
+        },
+        {
+          "text": "۰۶:۰۰",
+          "position": [
+            3.6,
+            1.9,
+            6.1,
+            2.6
+          ],
+          "size_pt": 96,
+          "color": "FFFFFF",
+          "bold": true,
+          "align": "center",
+          "bar": true
+        }
+      ],
+      "notes": "- ۶:۰۰ صبح روز آخر: همه‌چیز بالا، هنوز هیچ باری نیست؛ منتظر باز شدن شعبه‌ها."
+    },
+    {
+      "id": "slide_0615",
+      "title": "اسلاید ۱۶ (مرحله‌ی دوم) — ۶:۱۵",
+      "file": "slide7.jpg",
+      "station": "k8s",
+      "text_overlays": [
+        {
+          "text": "۱۴۰۴",
+          "position": "top-right",
+          "size_pt": 44,
+          "color": "FBBF24",
+          "bold": true,
+          "align": "center",
+          "width_in": 3.0,
+          "height_in": 1.0,
+          "bar": true
+        },
+        {
+          "text": "۰۶:۱۵",
+          "position": [
+            3.6,
+            1.9,
+            6.1,
+            2.6
+          ],
+          "size_pt": 96,
+          "color": "FFFFFF",
+          "bold": true,
+          "align": "center",
+          "bar": true
+        },
+        {
+          "text": "قل اول: آبروی هممون می‌ره\nقل دوم: ۱۵ سال سابقه‌ت کشک بود",
+          "position": [
+            0.9,
+            5.3,
+            11.5,
+            1.6
+          ],
+          "size_pt": 28,
+          "color": "FFFFFF",
+          "bold": false,
+          "align": "center",
+          "bar": true
+        }
+      ],
+      "transition": "none",
+      "notes": "- ۶:۱۵: دوقلوها هر دو بیدار شدن. هر کدوم یه جمله.\n- کاری نمونده بود؛ فقط نمودار بار رو نگاه می‌کردیم."
+    },
+    {
+      "id": "slide_0630",
+      "title": "اسلاید ۱۶ (مرحله‌ی سوم) — ۶:۳۰",
+      "file": "morning_0630_green.jpg",
+      "station": "k8s",
+      "text_overlays": [
+        {
+          "text": "۱۴۰۴",
+          "position": "top-right",
+          "size_pt": 44,
+          "color": "FBBF24",
+          "bold": true,
+          "align": "center",
+          "width_in": 3.0,
+          "height_in": 1.0,
+          "bar": true
+        },
+        {
+          "text": "۰۶:۳۰",
+          "position": [
+            3.6,
+            0.3,
+            6.1,
+            1.9
+          ],
+          "size_pt": 88,
+          "color": "4ADE80",
+          "bold": true,
+          "align": "center",
+          "bar": true
+        }
+      ],
+      "notes": "- ۶:۳۰: شعبه‌ها باز شدن، نمودار بالا رفت و کلاستر نگهش داشت."
+    },
+    {
+      "id": "slide_0630_2",
+      "title": "اسلاید ۱۶ (مرحله‌ی چهارم): درس‌آموخته",
+      "file": "morning_0630_green.jpg",
+      "station": "k8s",
+      "text_overlays": [
+        {
+          "text": "۱۴۰۴",
+          "position": "top-right",
+          "size_pt": 44,
+          "color": "FBBF24",
+          "bold": true,
+          "align": "center",
+          "width_in": 3.0,
+          "height_in": 1.0,
+          "bar": true
+        },
+        {
+          "text": "۰۶:۳۰",
+          "position": [
+            3.6,
+            0.3,
+            6.1,
+            1.9
+          ],
+          "size_pt": 88,
+          "color": "4ADE80",
+          "bold": true,
+          "align": "center",
+          "bar": true
+        },
+        {
+          "text": "آمادگی لازم بود و سه شب را ممکن کرد؛ ولی آمادگی صددرصد هیچ‌وقت نمی‌رسد.",
+          "position": [
+            0.9,
+            5.3,
+            11.5,
+            1.6
+          ],
+          "size_pt": 28,
+          "color": "FFFFFF",
+          "bold": false,
+          "align": "center",
+          "bar": true
+        }
+      ],
+      "transition": "none",
+      "notes": "- ادامه‌ی اسلاید قبل.\n- بعدش فهمیدیم دامنه‌ی سرویس‌ها با دامنه‌ی داخلی کوبرنتیز یکیه و عوضش کردیم.\n- پل به ISR: سه شب بی‌خوابی افتخار نیست؛ امروز چیزی می‌سازیم که کسی مجبور نشه."
+    },
+    {
+      "id": "slide_isr",
+      "title": "اسلاید ۱۷ — امروز: ISR",
       "file": "slide8.jpg",
-      "type": "station",
-      "title": "اسلاید ۱۱ — پرده ششم (۱۴۰۳ و آینده): پلتفرم خودکارسازی هوشمند عملیات (Autonomous ISR Platform)",
-      "back_to_roadmap": true,
-      "nav_buttons": true,
-      "notes": "📌 راهنمای استیج: نشان دادن جهش تکنولوژی امروز، انتقال حس سرعت و هوشمندی.\n\n🎙️ نکات کلیدی گفتار:\n- رسیدن به زمان حال (۱۴۰۳): توسعه پلتفرم هوشمند ISR در تیم تحقیق و توسعه.\n- ارکستراسیون فرآیندها با n8n، تریگر خودکار جاب‌های Jenkins، تگ زدن اتوماتیک ورژن‌های Git و تحلیل لاگ‌ها و Auto-Remediation با ایجنت‌های هوش مصنوعی.\n- انجام کارهایی که روزی ساعت‌ها جلسه و شیفت شبانه می‌طلبید، در چند ثانیه."
+      "station": "isr",
+      "text_overlays": [
+        {
+          "text": "امروز",
+          "position": "top-right",
+          "size_pt": 44,
+          "color": "FBBF24",
+          "bold": true,
+          "align": "center",
+          "width_in": 3.0,
+          "height_in": 1.0,
+          "bar": true
+        },
+        {
+          "text": "Intelligent SRE",
+          "position": [
+            0.9,
+            1.7,
+            11.5,
+            0.9
+          ],
+          "size_pt": 32,
+          "color": "FFFFFF",
+          "bold": true,
+          "align": "center",
+          "bar": true
+        }
+      ],
+      "notes": "- n8n فرایندها رو ارکستریت می‌کنه، جاب‌های جنکینز رو اجرا می‌کنه، ورژن Git رو تگ می‌زنه، تحلیل لاگ و عیب‌یابی با ایجنت‌های AI.\n- هدف: کارهای عملیات همون‌جا انجام بشه؛ ژنراتور توپولوژی هم بخشی از ISR.\n- محدودیت: فعلاً تقریباً همه‌جا تأیید انسان لازمه."
     },
     {
-      "id": "slide_ai_meteor",
-      "file": "slide9.jpg",
-      "type": "conclusion",
-      "title": "اسلاید ۱۲ — پرده ششم (ادامه): شهاب‌سنگ هوش مصنوعی (AI) و دوراهی سرنوشت‌ساز بقا",
-      "back_to_roadmap": true,
-      "nav_buttons": true,
-      "notes": "📌 راهنمای استیج: اشاره مستقیم به تصویر شهاب‌سنگ و تقابل دو گروه، برانگیختن همذات‌پنداری عمیق در سالن.\n\n🎙️ نکات کلیدی گفتار:\n- بیدار شدن همگانی دوقلوهای ترس: امروز همه ما (از جونیور تا سینیور) پشت ChatGPT و Cursor دلمان لرزیده.\n- تقابل دو رویکرد در تصویر:\n  • سمت چپ (دایناسورها): سنگر گرفتن در قلعه قدیمی و بغل کردن سرورها و کابل‌های سنتی از ترس تغییر.\n  • سمت راست (پستانداران تطبیق‌پذیر): رفتن به استقبال تغییر با آغوش باز و یادگیری مداوم.\n- ماشین کد می‌زند و پایپ‌لاین ران می‌کند، اما هرگز نمی‌تواند «شجاعت» داشته باشد و پوست بیندازد."
+      "id": "slide_isr_2",
+      "title": "اسلاید ۱۷ (مرحله‌ی دوم): درس‌آموخته",
+      "file": "slide8.jpg",
+      "station": "isr",
+      "text_overlays": [
+        {
+          "text": "امروز",
+          "position": "top-right",
+          "size_pt": 44,
+          "color": "FBBF24",
+          "bold": true,
+          "align": "center",
+          "width_in": 3.0,
+          "height_in": 1.0,
+          "bar": true
+        },
+        {
+          "text": "Intelligent SRE",
+          "position": [
+            0.9,
+            1.7,
+            11.5,
+            0.9
+          ],
+          "size_pt": 32,
+          "color": "FFFFFF",
+          "bold": true,
+          "align": "center",
+          "bar": true
+        },
+        {
+          "text": "AI هم ابزار بعدیِ همین مسیر است.",
+          "position": [
+            0.9,
+            5.3,
+            11.5,
+            1.6
+          ],
+          "size_pt": 28,
+          "color": "FFFFFF",
+          "bold": false,
+          "align": "center",
+          "bar": true
+        }
+      ],
+      "transition": "none",
+      "notes": "- ادامه‌ی اسلاید قبل.\n- درس: AI هم ابزار بعدیِ همین مسیر است."
     },
     {
-      "id": "slide_final_shedding",
-      "file": "slide2_option3_evolution_shedding.jpg",
-      "type": "conclusion",
-      "title": "اسلاید ۱۳ — پایان: پیام طلایی بقا — پوسته خود را بشکافید، پوست بیندازید و زنده بمانید",
-      "back_to_roadmap": true,
-      "nav_buttons": true,
-      "notes": "📌 راهنمای استیج: ایستادن در مرکز سن، لحن الهام‌بخش و مقتدر.\n\n🎙️ نکات کلیدی گفتار:\n- از دوقلوهای ترس فرار نکنید؛ آن‌ها نشانه این هستند که در لبه رشدتان ایستاده‌اید.\n- شکستن پوسته Legacy Core و رها کردن دیوارهای بتنی قدیمی.\n\nجمله طلایی پایانی:\n«دایناسور نباشید؛ پوسته خود را بشکافید، تغییر کنید، پوست بیندازید و زنده بمانید.»\n\n*(سکوت ۳ ثانیه‌ای — نگاه مستقیم به سالن)*\nخیلی ممنونم از همگی."
+      "id": "slide_demo",
+      "title": "اسلاید ۱۸ — دموی ISR",
+      "file": null,
+      "background": "0A0F1D",
+      "station": "isr",
+      "text_overlays": [
+        {
+          "text": "امروز",
+          "position": "top-right",
+          "size_pt": 44,
+          "color": "FBBF24",
+          "bold": true,
+          "align": "center",
+          "width_in": 3.0,
+          "height_in": 1.0,
+          "bar": true
+        },
+        {
+          "text": "دموی ISR",
+          "position": [
+            0.9,
+            2.2,
+            11.5,
+            1.6
+          ],
+          "size_pt": 60,
+          "color": "FFFFFF",
+          "bold": true,
+          "align": "center"
+        },
+        {
+          "text": "از هشدار تا رفع",
+          "position": [
+            0.9,
+            4.0,
+            11.5,
+            1.0
+          ],
+          "size_pt": 32,
+          "color": "67E8F9",
+          "bold": false,
+          "align": "center"
+        }
+      ],
+      "video": "isr_demo.mp4",
+      "notes": "- جای ویدئوی دمو: slides/isr_demo.mp4 هنوز ضبط نشده؛ بعد از ضبط فایل رو بذار و build رو دوباره بزن تا خودکار جاسازی بشه.\n- متن همراه دمو بعد از ضبط نوشته می‌شود (ایده: اول یه هشدار اینسیدنت میاد).\n- یه محدودیت: فعلاً تقریباً همه‌جا تأیید انسان گرفته می‌شه.\n- لحظه‌ی ChatGPT/Cursor: ته دلم لرزید، کی نلرزید؟ قل دوم: «سینتکس حفظ کردن کشک بود؟»"
+    },
+    {
+      "id": "slide_fifth",
+      "title": "اسلاید ۱۹ — دایناسور دوباره: شهاب‌سنگ بعدی: AI",
+      "file": "slide2_option_cyber_dinosaur.jpg",
+      "text_overlays": [
+        {
+          "text": "شهاب‌سنگ بعدی: AI",
+          "position": "bottom",
+          "size_pt": 60,
+          "color": "FBBF24",
+          "bold": true,
+          "align": "center",
+          "bar": true
+        }
+      ],
+      "notes": "- این صدا آشناست: ۹۴، ۹۹ و ۱۴۰۴ همین حرف را زد و هر بار اشتباه می‌کرد.\n- چیزی که ما را نگه داشت کد دیروز نبود: بساز، تحویل بده، رها کن.\n- قل اول تا آخر هست؛ خراب می‌کنیم، ولی خراب‌کردن آخر کار نیست."
+    },
+    {
+      "id": "slide_saturday",
+      "title": "اسلاید ۲۱ — سه کار برای شنبه",
+      "file": null,
+      "background": "0A0F1D",
+      "text_overlays": [
+        {
+          "text": "سه کار برای شنبه",
+          "position": [
+            0.7,
+            0.4,
+            11.9,
+            1.1
+          ],
+          "size_pt": 40,
+          "color": "FBBF24",
+          "bold": true,
+          "align": "center"
+        },
+        {
+          "text": "۱. یه کار تکراری‌تون رو بدید به AI؛ نتیجه رو به تیم نشون بدید",
+          "position": [
+            0.9,
+            1.8,
+            11.5,
+            1.3
+          ],
+          "size_pt": 30,
+          "color": "FFFFFF",
+          "bold": false,
+          "align": "center",
+          "bar": true
+        },
+        {
+          "text": "۲. چیزی که فقط شما بلدید رو مستند کنید و تحویل بدید",
+          "position": [
+            0.9,
+            3.4,
+            11.5,
+            1.3
+          ],
+          "size_pt": 30,
+          "color": "FFFFFF",
+          "bold": false,
+          "align": "center",
+          "bar": true
+        },
+        {
+          "text": "۳. سالی یه بار چیزی که مرجعش هستید رو رها کنید",
+          "position": [
+            0.9,
+            5.0,
+            11.5,
+            1.3
+          ],
+          "size_pt": 30,
+          "color": "FFFFFF",
+          "bold": false,
+          "align": "center",
+          "bar": true
+        }
+      ],
+      "notes": "- ۱: این هفته یه کار تکراری رو بده به AI، نتیجه رو به تیم نشون بده.\n- ۲: چیزی که فقط تو بلدی مستند کن و تحویل بده.\n- ۳: سالی یه بار چیزی که مرجعش هستی رو رها کن."
+    },
+    {
+      "id": "slide_last",
+      "title": "اسلاید ۲۲ — جمله‌ی آخر",
+      "file": "earth_network.jpg",
+      "text_overlays": [
+        {
+          "text": "دایناسور نباشید؛ پوست بندازید.",
+          "position": "center",
+          "size_pt": 54,
+          "color": "FFFFFF",
+          "bold": true,
+          "align": "center",
+          "bar": true
+        }
+      ],
+      "notes": "- پوست انداختن یعنی همین: بساز، تحویل بده، رها کن، برو سراغ بعدی.\n- جمله‌ی آخر: دایناسور نباشید؛ پوست بندازید."
+    },
+    {
+      "id": "slide_qa",
+      "title": "اسلاید ۲۳ — پرسش و پاسخ",
+      "file": null,
+      "background": "0A0F1D",
+      "text_overlays": [
+        {
+          "text": "پرسش و پاسخ",
+          "position": "center",
+          "size_pt": 60,
+          "color": "FFFFFF",
+          "bold": true,
+          "align": "center"
+        }
+      ],
+      "notes": "- ممنون. سؤال دارید؟"
     }
   ]
 }

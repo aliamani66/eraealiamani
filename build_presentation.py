@@ -1,10 +1,10 @@
 """
 TechTalk Presentation Builder Engine
-Generates clean, interactive, clickable PowerPoint presentations based on slides_config.json.
+Generates the PowerPoint presentation based on slides_config.json.
 Features:
-- Pure minimal iconography for navigation buttons (no verbose text clutter).
-- Zero top badges to preserve 100% of the image artwork headers.
-- Dynamic ID-based hyperlinking for stations and roadmaps.
+- Navigation is by clicker only: no buttons and no clickable areas on the slides.
+- A progress bar of station dots at the bottom of every station slide.
+- Real PowerPoint text overlays (RTL Persian, LTR code) instead of text baked into images.
 - Windows file lock handling.
 """
 
@@ -24,7 +24,7 @@ if hasattr(sys.stderr, "reconfigure"):
 from pptx import Presentation
 from pptx.util import Inches, Pt
 from pptx.dml.color import RGBColor
-from pptx.enum.text import PP_ALIGN
+from pptx.enum.text import PP_ALIGN, MSO_ANCHOR
 from pptx.enum.shapes import MSO_SHAPE
 from pptx.oxml import parse_xml
 
@@ -55,96 +55,180 @@ def validate_config(config, base_dir):
             
         img_name = slide.get("file")
         if not img_name:
-            errors.append(f"Slide '{s_id}' has no 'file' specified.")
+            if not slide.get("background"):
+                errors.append(f"Slide '{s_id}' has no 'file' and no 'background' color.")
         else:
             path_in_slides = os.path.join(slides_dir, img_name)
             path_in_base = os.path.join(base_dir, img_name)
             if not (os.path.exists(path_in_slides) or os.path.exists(path_in_base)):
                 errors.append(f"Slide '{s_id}': Image '{img_name}' not found in '{slides_dir}' or '{base_dir}'.")
                 
-    roadmap = config.get("roadmap_settings", {})
-    roadmap_slide_id = roadmap.get("roadmap_slide_id")
+        video_name = slide.get("video")
+        if video_name and not (os.path.exists(os.path.join(slides_dir, video_name)) or os.path.exists(os.path.join(base_dir, video_name))):
+            print(f"  ⚠️ Slide '{s_id}': video '{video_name}' not found; the slide keeps its text overlays (add the video later and rebuild).")
+
+        for ov_idx, ov in enumerate(slide.get("text_overlays", [])):
+            if not ov.get("text"):
+                errors.append(f"Slide '{s_id}': text_overlays[{ov_idx}] has no 'text'.")
+            size = ov.get("size_pt", MAIN_FONT_PT)
+            if size < MIN_FONT_PT:
+                errors.append(f"Slide '{s_id}': text_overlays[{ov_idx}] size {size}pt is below the {MIN_FONT_PT}pt minimum.")
+            try:
+                overlay_box(ov.get("position", "center"), 13.333, 7.5)
+            except ValueError as e:
+                errors.append(f"Slide '{s_id}': text_overlays[{ov_idx}]: {e}")
+
+    roadmap_slide_id = config.get("roadmap_settings", {}).get("roadmap_slide_id")
     if roadmap_slide_id and roadmap_slide_id not in slide_ids:
         errors.append(f"Roadmap slide id '{roadmap_slide_id}' not found in slides list.")
-        
-    for hs in roadmap.get("hotspots", []):
-        target = hs.get("target_slide_id")
-        if target not in slide_ids:
-            errors.append(f"Hotspot '{hs.get('name')}' targets nonexistent slide id: '{target}'.")
 
-    quick_target = roadmap.get("quick_jump", {}).get("target_slide_id")
-    if quick_target and quick_target not in slide_ids:
-        errors.append(f"Roadmap quick jump targets nonexistent slide id: '{quick_target}'.")
+    station_ids = set()
+    for st_idx, st in enumerate(config.get("stations", [])):
+        st_id = st.get("id")
+        if not st_id or not st.get("year") or not st.get("title"):
+            errors.append(f"stations[{st_idx}] needs 'id', 'year' and 'title'.")
+        elif st_id in station_ids:
+            errors.append(f"Duplicate station id: '{st_id}'.")
+        else:
+            station_ids.add(st_id)
+
+    used_stations = set()
+    for slide in slides:
+        st_id = slide.get("station")
+        if st_id is None:
+            continue
+        if st_id not in station_ids:
+            errors.append(f"Slide '{slide.get('id')}' uses unknown station '{st_id}'.")
+        used_stations.add(st_id)
+    for st_id in sorted(station_ids - used_stations):
+        print(f"  ⚠️ Station '{st_id}' has no slide yet; its dot will never light up.")
 
     if errors:
         print("❌ Configuration validation failed with errors:")
         for err in errors:
             print(f"   • {err}")
         return False
-    
-    print(f"✅ Configuration valid: {len(slides)} slides defined, {len(roadmap.get('hotspots', []))} roadmap hotspots verified.")
+
+    print(f"✅ Configuration valid: {len(slides)} slides defined, {len(station_ids)} stations.")
     return True
 
 
-def add_icon_button(slide, left, top, size, icon, target_slide, font_size_pt=14, bg_rgb=(15, 23, 42), border_rgb=(6, 182, 212)):
-    """Creates a minimal, sleek icon-only navigation button with no text clutter."""
-    btn = slide.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, left, top, size, size)
-    btn.fill.solid()
-    btn.fill.fore_color.rgb = RGBColor(*bg_rgb)
-    btn.line.color.rgb = RGBColor(*border_rgb)
-    btn.line.width = Pt(1.2)
-    
-    tf = btn.text_frame
-    tf.word_wrap = False
-    tf.margin_left = Inches(0)
-    tf.margin_right = Inches(0)
-    tf.margin_top = Inches(0)
-    tf.margin_bottom = Inches(0)
-    
-    p = tf.paragraphs[0]
-    p.text = icon
-    p.font.name = 'Segoe UI Emoji'
-    p.font.size = Pt(font_size_pt)
-    p.font.bold = True
-    p.font.color.rgb = RGBColor(255, 255, 255)
-    p.alignment = PP_ALIGN.CENTER
-    
-    btn.click_action.target_slide = target_slide
-    return btn
+MIN_FONT_PT = 20
+MAIN_FONT_PT = 28
+DEFAULT_FONT = "Tahoma"
+CODE_FONT = "Consolas"
+A_NS = "http://schemas.openxmlformats.org/drawingml/2006/main"
 
 
-def add_transparent_hotspot(slide, left, top, width, height, target_slide):
-    """Creates an invisible hotspot rectangle that reliably captures mouse clicks."""
-    shape = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, left, top, width, height)
+def style_run(run, font_name, size_pt, rgb, bold=False):
+    """Sets font on the run itself (PowerPoint ignores paragraph-level defaults), Latin and complex-script."""
+    run.font.name = font_name
+    run.font.size = Pt(size_pt)
+    run.font.bold = bold
+    run.font.color.rgb = RGBColor(*rgb)
+    rPr = run._r.get_or_add_rPr()
+    for old in rPr.findall(f"{{{A_NS}}}cs"):
+        rPr.remove(old)
+    cs = parse_xml(f'<a:cs xmlns:a="{A_NS}" typeface="{font_name}"/>')
+    latin = rPr.find(f"{{{A_NS}}}latin")
+    latin.addnext(cs)
+
+
+def add_paragraph(tf, first, text, font_name, size_pt, rgb, bold=False, align=PP_ALIGN.CENTER, rtl=True, space_after=0):
+    p = tf.paragraphs[0] if first else tf.add_paragraph()
+    run = p.add_run()
+    run.text = text
+    style_run(run, font_name, size_pt, rgb, bold)
+    p.alignment = align
+    p.space_after = Pt(space_after)
+    p._element.get_or_add_pPr().set("rtl", "1" if rtl else "0")
+    return p
+
+
+def set_fill_and_line(shape, fill_hex=None, alpha_pct=100, line_xml=None):
+    """Replaces fill and outline of an autoshape. fill_hex=None means no fill."""
     spPr = shape._element.spPr
     for child in list(spPr):
-        if child.tag.endswith('solidFill') or child.tag.endswith('ln'):
+        if child.tag.endswith("solidFill") or child.tag.endswith("noFill") or child.tag.endswith("ln"):
             spPr.remove(child)
-            
-    # Alpha = 100 ensures mouse clicks are captured without any visible obstruction
-    fill_xml = parse_xml(
-        '<a:solidFill xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main">'
-        '<a:srgbClr val="FFFFFF"><a:alpha val="100"/></a:srgbClr>'
-        '</a:solidFill>'
+    if fill_hex:
+        spPr.append(parse_xml(
+            f'<a:solidFill xmlns:a="{A_NS}"><a:srgbClr val="{fill_hex}"><a:alpha val="{int(alpha_pct * 1000)}"/></a:srgbClr></a:solidFill>'
+        ))
+    else:
+        spPr.append(parse_xml(f'<a:noFill xmlns:a="{A_NS}"/>'))
+    spPr.append(parse_xml(line_xml or f'<a:ln xmlns:a="{A_NS}"><a:noFill/></a:ln>'))
+
+
+def hex_to_rgb(value):
+    value = value.lstrip("#")
+    return (int(value[0:2], 16), int(value[2:4], 16), int(value[4:6], 16))
+
+
+def overlay_box(position, slide_width_in, slide_height_in, width_in=None, height_in=None):
+    """Returns (left, top, width, height, align) in inches for a named or explicit position."""
+    margin = 0.4
+    if isinstance(position, (list, tuple)):
+        left, top, width, height = position
+        return left, top, width, height, None
+    w = width_in
+    h = height_in
+    if position == "top-right":
+        w, h = w or 3.6, h or 1.1
+        return slide_width_in - margin - w, margin, w, h, PP_ALIGN.RIGHT
+    if position == "top-left":
+        w, h = w or 3.6, h or 1.1
+        return margin, margin, w, h, PP_ALIGN.LEFT
+    if position == "bottom":
+        w, h = w or 11.6, h or 1.4
+        return (slide_width_in - w) / 2.0, slide_height_in - margin - h, w, h, PP_ALIGN.CENTER
+    if position == "center":
+        w, h = w or 11.0, h or 2.6
+        return (slide_width_in - w) / 2.0, (slide_height_in - h) / 2.0, w, h, PP_ALIGN.CENTER
+    raise ValueError(f"Unknown overlay position: {position!r}")
+
+
+def add_text_overlay(slide, ov, font_name, slide_width_in, slide_height_in):
+    """Real PowerPoint text with optional translucent dark bar. RTL by default, ltr=true for code."""
+    ltr = ov.get("ltr", False)
+    left, top, width, height, default_align = overlay_box(
+        ov.get("position", "center"), slide_width_in, slide_height_in, ov.get("width_in"), ov.get("height_in")
     )
-    spPr.append(fill_xml)
-    ln_xml = parse_xml(
-        '<a:ln xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main">'
-        '<a:noFill/>'
-        '</a:ln>'
-    )
-    spPr.append(ln_xml)
-    shape.click_action.target_slide = target_slide
+    align = {"left": PP_ALIGN.LEFT, "right": PP_ALIGN.RIGHT, "center": PP_ALIGN.CENTER}.get(ov.get("align"), default_align)
+    if align is None:
+        align = PP_ALIGN.LEFT if ltr else PP_ALIGN.RIGHT
+
+    shape = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, Inches(left), Inches(top), Inches(width), Inches(height))
+    bar = ov.get("bar")
+    if bar:
+        bar = {} if bar is True else bar
+        set_fill_and_line(shape, bar.get("color", "0A0F1D"), bar.get("alpha_pct", 70))
+    else:
+        set_fill_and_line(shape)
+    shape.shadow.inherit = False
+
+    tf = shape.text_frame
+    tf.word_wrap = True
+    tf.vertical_anchor = MSO_ANCHOR.MIDDLE
+    tf.margin_left = tf.margin_right = Inches(0.3)
+    tf.margin_top = tf.margin_bottom = Inches(0.15)
+
+    face = CODE_FONT if ltr else ov.get("font", font_name)
+    size = ov.get("size_pt", MAIN_FONT_PT)
+    rgb = hex_to_rgb(ov.get("color", "FFFFFF"))
+    lines = ov["text"].split("\n")
+    for i, line in enumerate(lines):
+        add_paragraph(tf, i == 0, line, face, size, rgb, ov.get("bold", False), align, rtl=not ltr)
     return shape
 
 
-def add_title_overlay(slide, overlay_cfg, slide_width_in, slide_height_in):
+def add_title_overlay(slide, overlay_cfg, font_name, slide_width_in, slide_height_in):
     """Creates a high-end keynote title card with RTL Persian typography."""
     card_w = overlay_cfg.get("width_in", 10.2)
     card_h = overlay_cfg.get("height_in", 3.4)
     card_top = overlay_cfg.get("top_in", 1.05)
     card_left = (slide_width_in - card_w) / 2.0
-    
+
     card = slide.shapes.add_shape(
         MSO_SHAPE.ROUNDED_RECTANGLE,
         Inches(card_left),
@@ -152,90 +236,106 @@ def add_title_overlay(slide, overlay_cfg, slide_width_in, slide_height_in):
         Inches(card_w),
         Inches(card_h)
     )
-    spPr = card._element.spPr
-    for child in list(spPr):
-        if child.tag.endswith('solidFill') or child.tag.endswith('ln'):
-            spPr.remove(child)
-            
-    # Frosted dark obsidian backdrop (80% opacity)
-    fill_xml = parse_xml(
-        '<a:solidFill xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main">'
-        '<a:srgbClr val="0A0F1D"><a:alpha val="80000"/></a:srgbClr>'
-        '</a:solidFill>'
+    # Frosted dark obsidian backdrop (80% opacity) with glowing cyan accent border
+    set_fill_and_line(
+        card, "0A0F1D", 80,
+        f'<a:ln xmlns:a="{A_NS}" w="19050"><a:solidFill><a:srgbClr val="06B6D4"><a:alpha val="65000"/></a:srgbClr></a:solidFill></a:ln>'
     )
-    spPr.append(fill_xml)
-    
-    # Glowing cyan accent border
-    ln_xml = parse_xml(
-        '<a:ln xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" w="19050">'
-        '<a:solidFill><a:srgbClr val="06B6D4"><a:alpha val="65000"/></a:srgbClr></a:solidFill>'
-        '</a:ln>'
-    )
-    spPr.append(ln_xml)
-    
+
     tf = card.text_frame
     tf.word_wrap = True
+    tf.vertical_anchor = MSO_ANCHOR.MIDDLE
     tf.margin_left = Inches(0.4)
     tf.margin_right = Inches(0.4)
     tf.margin_top = Inches(0.28)
     tf.margin_bottom = Inches(0.28)
-    
-    # 1. Event Tag / Pill
-    tag_text = overlay_cfg.get("tag", "🎙️  رویداد ارائـه تخصصـی مهندسـی  |  TECHTALK")
-    if tag_text:
-        p0 = tf.paragraphs[0]
-        p0.text = tag_text
-        p0.font.name = "Tahoma"
-        p0.font.size = Pt(13)
-        p0.font.bold = True
-        p0.font.color.rgb = RGBColor(56, 189, 248)  # Cyan 400
-        p0.alignment = PP_ALIGN.CENTER
-        p0.space_after = Pt(8)
-        pPr0 = p0._element.get_or_add_pPr()
-        pPr0.set('rtl', '1')
-        
-    # 2. Main Title
-    title_text = overlay_cfg.get("title", "دایناسورهای دنیای تک و مهارتِ بقا")
-    if title_text:
-        p1 = tf.add_paragraph() if tag_text else tf.paragraphs[0]
-        p1.text = title_text
-        p1.font.name = "Tahoma"
-        p1.font.size = Pt(36)
-        p1.font.bold = True
-        p1.font.color.rgb = RGBColor(255, 255, 255)  # Crisp White
-        p1.alignment = PP_ALIGN.CENTER
-        p1.space_after = Pt(10)
-        pPr1 = p1._element.get_or_add_pPr()
-        pPr1.set('rtl', '1')
-        
-    # 3. Subtitle
-    sub_text = overlay_cfg.get("subtitle", "")
-    if sub_text:
-        p2 = tf.add_paragraph()
-        p2.text = sub_text
-        p2.font.name = "Tahoma"
-        p2.font.size = Pt(15)
-        p2.font.bold = False
-        p2.font.color.rgb = RGBColor(203, 213, 225)  # Slate 300
-        p2.alignment = PP_ALIGN.CENTER
-        p2.space_after = Pt(14)
-        pPr2 = p2._element.get_or_add_pPr()
-        pPr2.set('rtl', '1')
-        
-    # 4. Presenter Info
-    pres_text = overlay_cfg.get("presenter", "ارائه‌دهنده: علی امانی   •   پاییز ۱۴۰۳")
-    if pres_text:
-        p3 = tf.add_paragraph()
-        p3.text = pres_text
-        p3.font.name = "Tahoma"
-        p3.font.size = Pt(14)
-        p3.font.bold = True
-        p3.font.color.rgb = RGBColor(251, 191, 36)  # Amber 400
-        p3.alignment = PP_ALIGN.CENTER
-        pPr3 = p3._element.get_or_add_pPr()
-        pPr3.set('rtl', '1')
-        
+
+    parts = [
+        ("tag", "🎙️  رویداد ارائـه تخصصـی مهندسـی  |  TECHTALK", 20, (56, 189, 248), True, 8),
+        ("title", "دایناسورهای دنیای تک و مهارتِ بقا", 36, (255, 255, 255), True, 10),
+        ("subtitle", "", 20, (203, 213, 225), False, 14),
+        ("presenter", "ارائه‌دهنده: علی امانی", 20, (251, 191, 36), True, 0),
+    ]
+    first = True
+    for key, default, size, rgb, bold, gap in parts:
+        text = overlay_cfg.get(key, default)
+        if not text:
+            continue
+        add_paragraph(tf, first, text, font_name, size, rgb, bold, PP_ALIGN.CENTER, space_after=gap)
+        first = False
+
     return card
+
+
+def add_progress_bar(slide, station_count, current_idx, slide_width_in, slide_height_in):
+    """Row of dots, one per station, first station on the right (RTL). No text.
+    Current dot is bright, earlier ones half-bright, later ones faint."""
+    dot = 0.18
+    gap = 0.22
+    pad_x, pad_y = 0.3, 0.07
+    row_w = station_count * dot + (station_count - 1) * gap
+    pill_w, pill_h = row_w + 2 * pad_x, dot + 2 * pad_y
+    pill_left = (slide_width_in - pill_w) / 2.0
+    pill_top = slide_height_in - 0.07 - pill_h
+
+    pill = slide.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(pill_left), Inches(pill_top), Inches(pill_w), Inches(pill_h))
+    pill.name = "progress-bar"
+    pill.adjustments[0] = 0.5
+    set_fill_and_line(pill, "0A0F1D", 60)
+    pill.shadow.inherit = False
+
+    for i in range(station_count):
+        left = pill_left + pill_w - pad_x - dot - i * (dot + gap)
+        shape = slide.shapes.add_shape(MSO_SHAPE.OVAL, Inches(left), Inches(pill_top + pad_y), Inches(dot), Inches(dot))
+        shape.name = f"progress-dot-{i + 1}"
+        alpha = 100 if i == current_idx else (50 if i < current_idx else 20)
+        set_fill_and_line(shape, "06B6D4" if i <= current_idx else "FFFFFF", alpha)
+        shape.shadow.inherit = False
+
+
+def add_roadmap(slide, stations, font_name, slide_width_in, slide_height_in):
+    """Horizontal career line, first station on the right (RTL). Each station: circle on the line,
+    year above (28pt) and short title below (20pt), all real PowerPoint text."""
+    count = len(stations)
+    margin_x = 0.6
+    cell_w = (slide_width_in - 2 * margin_x) / count
+    line_y = slide_height_in / 2.0 + 0.1
+    circle = 0.5
+    text_h = 0.75
+
+    line_left = margin_x + cell_w / 2.0
+    line_w = slide_width_in - 2 * margin_x - cell_w
+    line = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, Inches(line_left), Inches(line_y - 0.03), Inches(line_w), Inches(0.06))
+    line.name = "roadmap-line"
+    set_fill_and_line(line, "06B6D4", 80)
+    line.shadow.inherit = False
+
+    for i, st in enumerate(stations):
+        cell_left = slide_width_in - margin_x - (i + 1) * cell_w
+        center_x = cell_left + cell_w / 2.0
+        last = i == count - 1
+
+        dot = slide.shapes.add_shape(MSO_SHAPE.OVAL, Inches(center_x - circle / 2.0), Inches(line_y - circle / 2.0), Inches(circle), Inches(circle))
+        dot.name = f"roadmap-station-{st['id']}"
+        set_fill_and_line(
+            dot, "FBBF24" if last else "06B6D4", 100,
+            f'<a:ln xmlns:a="{A_NS}" w="38100"><a:solidFill><a:srgbClr val="FFFFFF"/></a:solidFill></a:ln>'
+        )
+        dot.shadow.inherit = False
+
+        for name, text, top, size, rgb, bold in (
+            ("year", st["year"], line_y - circle / 2.0 - 0.15 - text_h, 28, (251, 191, 36), True),
+            ("title", st["title"], line_y + circle / 2.0 + 0.15, 20, (255, 255, 255), False),
+        ):
+            box = slide.shapes.add_textbox(Inches(cell_left), Inches(top), Inches(cell_w), Inches(text_h))
+            box.name = f"roadmap-{name}-{st['id']}"
+            tf = box.text_frame
+            tf.word_wrap = False  # one-word labels: overflow evenly instead of wrapping
+            tf.vertical_anchor = MSO_ANCHOR.BOTTOM if name == "year" else MSO_ANCHOR.TOP
+            tf.margin_left = tf.margin_right = Inches(0.02)
+            tf.margin_top = tf.margin_bottom = Inches(0.02)
+            ltr = st["title"].isascii() and name == "title"
+            add_paragraph(tf, True, text, font_name, size, rgb, bold, PP_ALIGN.CENTER, rtl=not ltr)
 
 
 def build_presentation(config_path, output_override=None):
@@ -250,180 +350,89 @@ def build_presentation(config_path, output_override=None):
     slide_width_in = pres_meta.get("width_inch", 13.333)
     slide_height_in = pres_meta.get("height_inch", 7.5)
     
+    font_name = pres_meta.get("font", DEFAULT_FONT)
+
     prs = Presentation()
     prs.slide_width = Inches(slide_width_in)
     prs.slide_height = Inches(slide_height_in)
     blank_layout = prs.slide_layouts[6]
     
     slides_cfg = config.get("slides", [])
-    roadmap_cfg = config.get("roadmap_settings", {})
-    
-    id_to_slide = {}
-    id_to_idx = {}
-    
+    station_order = [st["id"] for st in config.get("stations", [])]
+
     print("\n📦 Generating slides and transitions...")
-    # Step 1: Create all slides with full-bleed 16:9 images, transitions, and notes
+    # Create all slides with full-bleed 16:9 images, text, progress bar, transitions, and notes
     for idx, scfg in enumerate(slides_cfg):
         s_id = scfg["id"]
-        img_name = scfg["file"]
-        
-        img_path = os.path.join(slides_dir, img_name)
-        if not os.path.exists(img_path):
-            img_path = os.path.join(base_dir, img_name)
-            
+        img_name = scfg.get("file")
+
         slide = prs.slides.add_slide(blank_layout)
-        id_to_slide[s_id] = slide
-        id_to_idx[s_id] = idx
-        
-        # Add background image 16:9 full-screen
-        slide.shapes.add_picture(img_path, Inches(0), Inches(0), Inches(slide_width_in), Inches(slide_height_in))
+
+        if img_name:
+            # Background image 16:9 full-screen
+            img_path = os.path.join(slides_dir, img_name)
+            if not os.path.exists(img_path):
+                img_path = os.path.join(base_dir, img_name)
+            slide.shapes.add_picture(img_path, Inches(0), Inches(0), Inches(slide_width_in), Inches(slide_height_in))
+        else:
+            slide.background.fill.solid()
+            slide.background.fill.fore_color.rgb = RGBColor(*hex_to_rgb(scfg["background"]))
         
         # Add title overlay if specified
         if "title_overlay" in scfg:
-            add_title_overlay(slide, scfg["title_overlay"], slide_width_in, slide_height_in)
+            add_title_overlay(slide, scfg["title_overlay"], font_name, slide_width_in, slide_height_in)
             print(f"  ✨ Added elegant title card overlay on Slide '{s_id}'.")
-            
-        # Add smooth fade transition
-        trans_xml = '<p:transition xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main" spd="med"><p:fade/></p:transition>'
-        slide._element.append(parse_xml(trans_xml))
+
+        # Optional full-slide video (slide key "video"). If the file is missing, the text overlays stay as a placeholder.
+        video_embedded = False
+        video_name = scfg.get("video")
+        if video_name:
+            video_path = os.path.join(slides_dir, video_name)
+            if not os.path.exists(video_path):
+                video_path = os.path.join(base_dir, video_name)
+            if os.path.exists(video_path):
+                slide.shapes.add_movie(video_path, Inches(0), Inches(0), Inches(slide_width_in), Inches(slide_height_in), mime_type="video/mp4")
+                video_embedded = True
+
+        for ov in ([] if video_embedded else scfg.get("text_overlays", [])):
+            add_text_overlay(slide, ov, font_name, slide_width_in, slide_height_in)
+
+        if scfg.get("type") == "roadmap":
+            add_roadmap(slide, config.get("stations", []), font_name, slide_width_in, slide_height_in)
+
+        if scfg.get("station"):
+            add_progress_bar(slide, len(station_order), station_order.index(scfg["station"]), slide_width_in, slide_height_in)
+
+        # Smooth fade transition, unless this slide is just the next step of the previous one
+        if scfg.get("transition", "fade") != "none":
+            trans_xml = '<p:transition xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main" spd="med"><p:fade/></p:transition>'
+            slide._element.append(parse_xml(trans_xml))
         
         # Add speaker notes
         notes_frame = slide.notes_slide.notes_text_frame
         notes_frame.text = f"{scfg.get('title', '')}\n\n{scfg.get('notes', '')}"
         
-        print(f"  [{idx+1}/{len(slides_cfg)}] Slide '{s_id}' created with '{img_name}'.")
+        print(f"  [{idx+1}/{len(slides_cfg)}] Slide '{s_id}' created with '{img_name or 'solid background'}'.")
 
-    # Step 2: Configure Roadmap Slide
-    roadmap_id = roadmap_cfg.get("roadmap_slide_id")
-    roadmap_slide = id_to_slide.get(roadmap_id)
-    
-    if roadmap_slide:
-        print("\n🗺️ Adding roadmap clickable hotspots and minimal shortcut...")
-        for hs in roadmap_cfg.get("hotspots", []):
-            target_id = hs.get("target_slide_id")
-            target_slide = id_to_slide.get(target_id)
-            if not target_slide:
-                continue
-                
-            box_px = hs.get("box_px")
-            ref_w, ref_h = hs.get("ref_image_size", [1376, 768])
-            
-            x_in = Inches((box_px[0] / ref_w) * slide_width_in)
-            y_in = Inches((box_px[1] / ref_h) * slide_height_in)
-            w_in = Inches((box_px[2] / ref_w) * slide_width_in)
-            h_in = Inches((box_px[3] / ref_h) * slide_height_in)
-            
-            add_transparent_hotspot(roadmap_slide, x_in, y_in, w_in, h_in, target_slide)
-            print(f"  • Hotspot '{hs.get('name')}' -> '{target_id}' (Slide #{id_to_idx[target_id]+1})")
-            
-        # Minimal quick jump icon button (no verbose text)
-        qj = roadmap_cfg.get("quick_jump")
-        if qj and qj.get("target_slide_id") in id_to_slide:
-            q_target = id_to_slide[qj["target_slide_id"]]
-            add_icon_button(
-                roadmap_slide,
-                left=Inches(0.4),
-                top=Inches(0.35),
-                size=Inches(0.46),
-                icon=qj.get("icon", "☄️"),
-                target_slide=q_target,
-                font_size_pt=14,
-                bg_rgb=qj.get("bg_color", [26, 16, 37]),
-                border_rgb=qj.get("border_color", [236, 72, 153])
-            )
-
-    # Step 3: Add Minimal Clean Navigation Buttons (NO TOP BADGES!)
-    print("\n🧭 Adding clean icon-only navigation buttons...")
-    btn_size = Inches(0.44)
-    btn_y_bottom = Inches(6.7)
-    
-    for idx, scfg in enumerate(slides_cfg):
-        s_id = scfg["id"]
-        slide = id_to_slide[s_id]
-        
-        # 1. Back to Roadmap icon button (Top-Left, minimal icon [🗺️], no text)
-        if scfg.get("back_to_roadmap", False) and roadmap_slide:
-            add_icon_button(
-                slide,
-                left=Inches(0.4),
-                top=Inches(0.35),
-                size=btn_size,
-                icon="🗺️",
-                target_slide=roadmap_slide,
-                font_size_pt=14,
-                bg_rgb=[15, 23, 42],
-                border_rgb=[6, 182, 212]
-            )
-
-        # 2. Next / Previous icon buttons (Bottom corners, minimal [◀] and [▶], no text)
-        if scfg.get("nav_buttons", False):
-            # Previous slide button (Bottom-Right, minimal icon [▶])
-            if idx > 0:
-                prev_slide = id_to_slide[slides_cfg[idx - 1]["id"]]
-                add_icon_button(
-                    slide,
-                    left=Inches(12.45),
-                    top=btn_y_bottom,
-                    size=btn_size,
-                    icon="▶",
-                    target_slide=prev_slide,
-                    font_size_pt=12,
-                    bg_rgb=[15, 23, 42],
-                    border_rgb=[100, 116, 139]
-                )
-                
-            # Next slide button (Bottom-Left, minimal icon [◀])
-            if idx < len(slides_cfg) - 1:
-                next_slide = id_to_slide[slides_cfg[idx + 1]["id"]]
-                is_finale = (idx >= len(slides_cfg) - 3)
-                next_border = [236, 72, 153] if is_finale else [6, 182, 212]
-                add_icon_button(
-                    slide,
-                    left=Inches(0.4),
-                    top=btn_y_bottom,
-                    size=btn_size,
-                    icon="◀",
-                    target_slide=next_slide,
-                    font_size_pt=12,
-                    bg_rgb=[15, 23, 42],
-                    border_rgb=next_border
-                )
-
-    # Step 4: Save PowerPoint presentation safely
-    print("\n💾 Saving presentations...")
+    # Save the single presentation file
+    print("\n💾 Saving presentation...")
     primary_out = output_override or pres_meta.get("output_primary", "TechTalk_Dinosaurs_Survival.pptx")
     primary_path = os.path.join(base_dir, primary_out)
-    interactive_out = pres_meta.get("output_interactive", "TechTalk_Dinosaurs_Survival_Interactive.pptx")
-    interactive_path = os.path.join(base_dir, interactive_out)
-    clean_path = os.path.join(base_dir, "TechTalk_Dinosaurs_Survival_Clean.pptx")
-    
-    def try_save(target_path, desc):
-        try:
-            prs.save(target_path)
-            print(f"  ✅ Saved {desc}: {target_path}")
-            return True
-        except PermissionError:
-            print(f"  ⚠️ Note: '{os.path.basename(target_path)}' is currently open in PowerPoint (file locked).")
-            return False
-        except Exception as e:
-            print(f"  ❌ Error saving '{target_path}': {e}")
-            return False
+    try:
+        prs.save(primary_path)
+    except PermissionError:
+        print(f"❌ Cannot write '{primary_out}': the file is locked, most likely open in PowerPoint.")
+        print("   Close it and run the build again. The file was not changed.")
+        sys.exit(1)
+    print(f"  ✅ Saved: {primary_path}")
 
-    # Save to Clean guaranteed copy
-    try_save(clean_path, "Clean Guaranteed Deck")
-    
-    # Save to primary
-    try_save(primary_path, "Primary Deck")
-    
-    # Save to interactive (if not locked by user's PowerPoint)
-    try_save(interactive_path, "Interactive Deck")
-        
     print("\n🎉 Presentation build completed successfully with pure minimal layout!")
 
 
 def main():
     parser = argparse.ArgumentParser(description="Build clean interactive TechTalk PowerPoint decks")
-    parser.add_argument("--config", default=r"d:\work\erae-ali\slides_config.json", help="Path to slides_config.json")
+    default_config = os.path.join(os.path.dirname(os.path.abspath(__file__)), "slides_config.json")
+    parser.add_argument("--config", default=default_config, help="Path to slides_config.json")
     parser.add_argument("--output", default=None, help="Custom output PPTX filename")
     parser.add_argument("--validate", action="store_true", help="Only validate configuration without writing")
     args = parser.parse_args()

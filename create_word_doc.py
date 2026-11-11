@@ -6,6 +6,9 @@ from docx.enum.table import WD_TABLE_ALIGNMENT
 from docx.oxml import OxmlElement, parse_xml
 from docx.oxml.ns import nsdecls, qn
 import os
+import re
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 def make_p_rtl(p):
     p.alignment = WD_ALIGN_PARAGRAPH.RIGHT
@@ -113,7 +116,7 @@ make_p_rtl(hp3)
 hp3.alignment = WD_ALIGN_PARAGRAPH.CENTER
 hp3.paragraph_format.space_before = Pt(2)
 hp3.paragraph_format.space_after = Pt(6)
-r3 = hp3.add_run("ارائه‌دهنده: علی  |  مدت زمان: ۳۵ تا ۴۰ دقیقه  |  نسخه نهایی بازنویسی‌شده")
+r3 = hp3.add_run("ارائه‌دهنده: علی امانی  |  مدت زمان: ۳۰ تا ۴۰ دقیقه  |  هفت پرده، ۲۳ اسلاید")
 make_run_rtl(r3, font_size=10, bold=False, color_rgb=(148, 163, 184))
 
 # Space
@@ -132,23 +135,17 @@ set_cell_margins(icell, top=140, bottom=140, left=180, right=180)
 
 ip = icell.paragraphs[0]
 make_p_rtl(ip)
-ir = ip.add_run("📌 ساختار روایی و توالی تاریخی ارائه (تایم‌لاین خطی ۱۳ اسلاید):")
+ir = ip.add_run("📌 ساختار روایی و توالی تاریخی ارائه (هفت پرده، ۲۳ اسلاید):")
 make_run_rtl(ir, font_size=11, bold=True, color_rgb=(15, 23, 42))
 
 timeline_points = [
-    "۱. اسلاید ۱ (کاور رسمی): راهروی نوری دیتاسنتر و خطوط فیبر نوری + معرفی عنوان و علی امانی.",
-    "۲. اسلاید ۲ (پرده اول - استعاره انقراض): ۶۶ میلیون سال پیش ➔ دایناسور تایتان سرورها زیر شهاب‌سنگ تحول در برابر پستانداران چابک سایبرنتیک.",
-    "۳. اسلاید ۳ (پرده اول - دوقلوهای ترس): مهندس نرم‌افزار میان دو ستون هولوگرافیک خطا در پروداکشن (قل اول) و سرعت هوش مصنوعی (قل دوم).",
-    "۴. اسلاید ۴ (بزرگراه ۱۶ ساله مسیر شغلی): نقشه راه تعاملی سایبرنتیک از سال ۱۳۸۸ تا ۱۴۰۳+ (۷ ایستگاه سفر بقا).",
-    "۵. اسلاید ۵ (ایستگاه ۱ - ۱۳۸۸ تا ۱۳۹۴): ۶ سال کدنویسی ناب جاوا ➔ جهش جسورانه به عملیات با ابزار سلف‌سرویس Query Executor.",
-    "۶. اسلاید ۶ (ایستگاه ۲ - ۱۳۹۵): وب‌لاجیک در اسکیل Enterprise ➔ ماژول اختصاصی Authenticator ➔ اولین درس بزرگِ رها کردن ابزار.",
-    "۷. اسلاید ۷ (ایستگاه ۳ - ۱۳۹۶): فاجعه خاموش شدن سرورها با حلقه for ➔ ضرورت اتوماسیون با Jenkins و فریم‌ورک Groovy.",
-    "۸. اسلاید ۸ (ایستگاه ۴ - ۱۳۹۷): پایان دوران SSH دستی به ۲۰ سرور ➔ هدایت متمرکز تمام لاگ‌ها به پلتفرم متمرکز ELK.",
-    "۹. اسلاید ۹ (ایستگاه ۵ - ۱۳۹۸ تا ۱۴۰۰): تشکیل تیم تحقیق و توسعه (R&D Ops) ➔ چرخه ۵ مرحله‌ای ➔ قانون طلایی: «حق نداری سرویسی که آوردی بالا رو نگه داری؛ بساز و رها کن!»",
-    "۱۰. اسلاید ۱۰ (ایستگاه ۶ - ۱۴۰۰ - نقطه اوج): ساعت ۰۶:۰۰ صبح بانک ➔ ۳ شبانه‌روز بی‌خوابی ➔ امتحان نهایی در مهاجرت بیگ‌بنگ به کوبرنتیز و نجات سیستم.",
-    "۱۱. اسلاید ۱۱ (ایستگاه ۷ - ۱۴۰۳): پلتفرم خودکارسازی هوشمند ISR با ترکیب n8n، جنکینز، گیت و دستیاران هوش مصنوعی.",
-    "۱۲. اسلاید ۱۲ (پرده ششم - شهاب‌سنگ AI): دوراهی سرنوشت‌ساز مهندسان در برابر هوش مصنوعی (سنگر در قلعه سنتی یا استقبال با آغوش باز).",
-    "۱۳. اسلاید ۱۳ (پیام طلایی بقا - شاهکار پایانی): شکستن پوسته Legacy Core، پرواز کالبد کوانتومی به سوی آینده: «دایناسور نباشید؛ پوسته خود را بشکافید، تغییر کنید، پوست بیندازید و زنده بمانید.»"
+    "پرده اول (اسلایدهای ۱ تا ۵): کاور ➔ تیزر حلقه‌ی for ➔ دایناسور ➔ دوقلوهای ترس ➔ نقشه‌ی راه هشت‌ایستگاهی.",
+    "پرده دوم (اسلایدهای ۶ و ۷، ۱۳۸۹ تا ۱۳۹۴): جاوا ➔ رفتن به عملیات و Query Executor ➔ کارنامه‌ی قل دوم: یک از یک غلط.",
+    "پرده سوم (اسلایدهای ۸ تا ۱۱، ۱۳۹۵ تا ۱۳۹۷): وب‌لاجیک (و کنارگذاشتنش در ۱۴۰۰) ➔ حلقه‌ی for کامل و ۷۰ سرور ➔ جنکینز (دو از دو غلط) ➔ ELK.",
+    "پرده چهارم (اسلایدهای ۱۲ تا ۱۴، ۱۳۹۸ و ۱۳۹۹): چرخه‌ی R&D ➔ «بساز، تحویل بده، رها کن» ➔ سال ۹۹ (سه از سه غلط).",
+    "پرده پنجم (اسلایدهای ۱۵ و ۱۶، ۱۴۰۰): حادثه و مهاجرت سه‌شبه ➔ ۶:۰۰ ➔ ۶:۱۵ ➔ ۶:۳۰ (چهار از چهار غلط).",
+    "پرده ششم (اسلایدهای ۱۷ و ۱۸): ISR (Intelligent SRE) و ویدئوی دمو.",
+    "پرده هفتم (اسلایدهای ۱۹ تا ۲۳): بار پنجم ➔ کارنامه‌ی قل دوم ➔ سه کار برای شنبه ➔ «دایناسور نباشید؛ پوست بندازید.» ➔ پرسش و پاسخ."
 ]
 
 for tp in timeline_points:
@@ -166,7 +163,7 @@ make_p_rtl(p_space2)
 p_space2.paragraph_format.space_after = Pt(12)
 
 # Load Script Lines
-with open(r"d:\work\erae-ali\techtalk_script.md", "r", encoding="utf-8") as f:
+with open(os.path.join(BASE_DIR, "techtalk_script.md"), "r", encoding="utf-8") as f:
     lines = f.readlines()
 
 for line in lines:
@@ -177,7 +174,7 @@ for line in lines:
         continue
     if raw.startswith("## ساختار و توالی"):
         continue
-    if raw.startswith("1. **اسلاید") or raw.startswith("2. **اسلاید") or raw.startswith("3. **اسلاید") or raw.startswith("4. **اسلاید") or raw.startswith("5. **اسلاید") or raw.startswith("6. **اسلاید") or raw.startswith("7. **اسلاید") or raw.startswith("8. **اسلاید") or raw.startswith("9. **اسلاید") or raw.startswith("10. **اسلاید") or raw.startswith("11. **اسلاید") or raw.startswith("12. **اسلاید") or raw.startswith("13. **اسلاید"):
+    if re.match(r"^\d+\. \*\*", raw):
         continue
     if raw == "---":
         continue
@@ -242,8 +239,8 @@ for line in lines:
     else:
         make_run_rtl(r, font_size=11, bold=False, color_rgb=(30, 41, 59))
 
-output_doc = r"d:\work\erae-ali\TechTalk_Full_Script.docx"
-output_updated = r"d:\work\erae-ali\TechTalk_Full_Script_Updated.docx"
+output_doc = os.path.join(BASE_DIR, "TechTalk_Full_Script.docx")
+output_updated = os.path.join(BASE_DIR, "TechTalk_Full_Script_Updated.docx")
 
 try:
     doc.save(output_doc)
