@@ -90,18 +90,20 @@ TIMING_HEAD = ("پرده", "موضوع", "اسلایدها", "زمان تقری�
 # The timing table is given verbatim by the brief (columns right-to-left: first tuple item is the rightmost column).
 TIMING_ROWS = [
     ("صفر", f"LGTM{FA_QMARK} و عنوان", "۱ تا ۲", "۳ دقیقه (با تعامل جمع)"),
-    ("اول", f"CHANGELOG یک آدم{FA_COMMA} نسخه{ZW}ی ۱.۰.۰", "۳ تا ۵", "۲ دقیقه"),
-    ("دوم", f"نسخه{ZW}ی ۲.۰.۰: عملیات{FA_COMMA} Query Executor{FA_COMMA} دو اینسیدنت", "۶ تا ۱۱", "۵ دقیقه"),
+    ("اول", f"CHANGELOG یک آدم{FA_COMMA} نسخه{ZW}ی ۱.۰.۰", "۳ تا ۵", f"۲{FA_DECIMAL}۵ دقیقه"),
+    ("دوم", f"نسخه{ZW}ی ۲.۰.۰: عملیات{FA_COMMA} Query Executor{FA_COMMA} دو اینسیدنت", "۶ تا ۱۱", f"۵{FA_DECIMAL}۵ دقیقه"),
     ("سوم", f"وب{ZW}لاجیک{FA_COMMA} همان سه خط{FA_COMMA} جنکینز{FA_COMMA} ELK", "۱۲ تا ۱۸", f"۵{FA_DECIMAL}۵ دقیقه"),
     ("چهارم", f"نسخه{ZW}ی ۳.۰.۰: R&D و «رها کن»", "۱۹ تا ۲۴", f"۴{FA_DECIMAL}۵ دقیقه"),
-    ("پنجم", f"نسخه{ZW}ی ۴.۰.۰: سه سال{FA_COMMA} سه شب و ساعت ۶ صبح", "۲۵ تا ۳۰", "۵ دقیقه"),
-    ("ششم", f"Unreleased: ISR{FA_COMMA} دمو{FA_COMMA} AI", "۳۱ تا ۳۵", f"۴ دقیقه (با دموی ۹۰ ثانیه{ZW}ای)"),
-    ("هفتم", "CHANGELOG شما", "۳۶ تا ۳۹", "۳ دقیقه"),
+    ("پنجم", f"نسخه{ZW}ی ۴.۰.۰: مدیریت{FA_COMMA} از scale-up به scale-out", "۲۵ تا ۲۸", "۴ دقیقه"),
+    ("ششم", f"نسخه{ZW}ی ۵.۰.۰: سه سال{FA_COMMA} سه شب و ساعت ۶ صبح", "۲۹ تا ۳۴", f"۵{FA_DECIMAL}۵ دقیقه"),
+    ("هفتم", f"Unreleased: ISR{FA_COMMA} دمو{FA_COMMA} AI و صندلی شاگردی", "۳۵ تا ۴۲", f"۷{FA_DECIMAL}۵ دقیقه (با دموی ۹۰ ثانیه{ZW}ای)"),
+    ("هشتم", "CHANGELOG شما", "۴۳ تا ۴۷", "۴ دقیقه"),
 ]
-TIMING_TOTAL = ("جمع", "", f"۳۹ اسلاید{FA_COMMA} ۶۳ کلیک", "حدود ۳۲ دقیقه + پرسش و پاسخ")
+TIMING_TOTAL = ("جمع", "", f"۴۷ اسلاید{FA_COMMA} ۷۸ کلیک", "حدود ۴۲ دقیقه + پرسش و پاسخ")
 HEADER_SUBTITLE = "CHANGELOG یک مهندس \u2014 متن کامل ارائه"
 
-EXPECTED = {"slide": 39, "click": 24, "crowd": 4}
+EXPECTED = {"slide": 47, "click": 31, "crowd": 5}
+EXPECTED_PLACEHOLDERS = 2      # the «[؟ علی: …]» blanks the speaker still has to fill in
 
 
 # --------------------------------------------------------------------------------------------------------------------
@@ -833,16 +835,16 @@ def verify(path: Path) -> bool:
     check(n_click == EXPECTED["click"], f"click directions = {n_click} (want {EXPECTED['click']})")
     check(n_crowd == EXPECTED["crowd"], f"audience directions = {n_crowd} (want {EXPECTED['crowd']})")
     n_ph = sum(t.count("[؟ علی:") for t in texts)
-    check(n_ph == 1, f"placeholder '[؟ علی:' occurs {n_ph}x (want 1)")
+    check(n_ph == EXPECTED_PLACEHOLDERS, f"placeholder '[؟ علی:' occurs {n_ph}x (want {EXPECTED_PLACEHOLDERS})")
 
-    # the placeholder run must be highlighted
-    ph_ok = False
+    # every placeholder run must be highlighted
+    ph_ok = []
     for r in body.iter(qn("w:r")):
         t = "".join((x.text or "") for x in r.findall(qn("w:t")))
         if "[؟ علی:" in t:
             rpr = r.find(qn("w:rPr"))
-            ph_ok = rpr is not None and (rpr.find(qn("w:highlight")) is not None or rpr.find(qn("w:shd")) is not None)
-    check(ph_ok, "placeholder run is highlighted")
+            ph_ok.append(rpr is not None and (rpr.find(qn("w:highlight")) is not None or rpr.find(qn("w:shd")) is not None))
+    check(bool(ph_ok) and all(ph_ok), "placeholder runs are highlighted")
 
     # direction paragraphs carry paragraph shading (slide/click)
     shaded = {MARK_SLIDE: 0, MARK_CLICK: 0}

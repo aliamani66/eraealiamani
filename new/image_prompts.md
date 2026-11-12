@@ -3,7 +3,7 @@
 
 # پرامپت‌های تصویر اسلایدها — ارائه‌ی «BREAKING CHANGES»
 
-- این فایل فهرست پرامپت‌هایی است که با آن‌ها تصویر پس‌زمینه‌ی اسلایدها را می‌سازید: ۲۲ تصویر، برای هر کدام یک پرامپت.
+- این فایل فهرست پرامپت‌هایی است که با آن‌ها تصویر پس‌زمینه‌ی اسلایدها را می‌سازید: ۲۵ تصویر، برای هر کدام یک پرامپت. ۲۲ تای اول ساخته شده‌اند و در `new/slides/` هستند؛ سه تای آخر (`23_colonnade`، `24_two_chairs` و `25_student_desk`) برای اسلایدهای تازه‌اند و هنوز باید ساخته شوند.
 - توضیح‌ها فارسی‌اند، اما خود پرامپت‌ها انگلیسی‌اند، چون مدل‌های تصویرساز با انگلیسی بهتر کار می‌کنند.
 - هر پرامپت خودکفاست (سبک و قاعده‌ی «بدون متن» داخل خودش تکرار شده)؛ هر بار فقط همان یکی را کپی کنید و در مدل تصویرساز بچسبانید.
 - تصویر را با نسبت `16:9` و دست‌کم `1920×1080` پیکسل بسازید و دقیقاً با نام همان بخش در پوشه‌ی `new/slides/` ذخیره کنید (`.jpg` یا `.png`، هر دو درست است).
@@ -43,7 +43,7 @@ text, letters, numbers, words, captions, logos, brand names, watermark, signatur
 
 | # | فایل | اسلاید | توضیح یک‌خطی |
 |---|---|---|---|
-| ۱ | `01_cover.jpg` | ۲ و ۳۹ | سنگ مشکی با یک ترک طلایی؛ عنوان و پایان |
+| ۱ | `01_cover.jpg` | ۲ و ۴۷ | سنگ مشکی با یک ترک طلایی؛ عنوان و پایان |
 | ۲ | `02_java.jpg` | ۵ | فنجان مشکی سالم کنار کیبورد؛ پنج سال دولوپر جاوا |
 | ۳ | `03_door.jpg` | ۶ | در سنگین دیتاسنتر که نیمه‌باز مانده؛ رفتن به عملیات |
 | ۴ | `04_queue.jpg` | ۷ | ردیف صندلی‌های خالی تا یک در بسته؛ صف پشت در عملیات |
@@ -57,20 +57,23 @@ text, letters, numbers, words, captions, logos, brand names, watermark, signatur
 | ۱۲ | `12_handover.jpg` | ۲۰ | دو دست و یک باتوم مشکی با درز طلایی؛ بساز، تحویل بده، رها کن |
 | ۱۳ | `13_pillar.jpg` | ۲۱ | تخته‌سنگی عظیم روی یک ستون باریک؛ SPOF |
 | ۱۴ | `14_dusk_office.jpg` | ۲۲ | دفتر خالی در غروب با یک میز روشن و سایه‌ی یک نفر؛ همکار جدید |
-| ۱۵ | `15_bridge.jpg` | ۲۵ | پلی که تقریباً ساخته شده و فقط دهانه‌ی آخرش مانده؛ سه سال آماده‌سازی |
-| ۱۶ | `16_blackout.jpg` | ۲۶ | تالار تاریک دیتاسنتر با چند چراغ اضطراری کهربایی؛ از دست رفتن زیرساخت |
-| ۱۷ | `17_night_ops.jpg` | ۲۷ | میز بلند اتاق عملیات در شب با مانیتورهای روشن؛ سه شب مهاجرت |
-| ۱۸ | `18_padlock.jpg` | ۲۸ | قفل برنجی کوچک روی در عظیم گاوصندوق؛ یک دسترسی |
-| ۱۹ | `19_dawn.jpg` | ۲۹ و ۳۰ | پنجره‌ی اتاق عملیات پیش از طلوع با اولین خط نارنجی؛ انتظار بار صبح |
-| ۲۰ | `20_graph.jpg` | ۳۱ | شبکه‌ای از سیم و مهره‌ی طلا روی مشکی؛ ISR و ایجنت‌ها |
-| ۲۱ | `21_box.jpg` | ۳۵ | جعبه‌ی مشکی بسته با نور طلایی از زیر درش؛ نسخه‌ی بعدی |
-| ۲۲ | `22_gold_network.jpg` | ۳۸ | شبکه‌ی ترک‌های طلایی روی همان سنگ؛ هر شکستی چیزی اضافه کرد |
+| ۱۵ | `15_bridge.jpg` | ۲۹ | پلی که تقریباً ساخته شده و فقط دهانه‌ی آخرش مانده؛ سه سال آماده‌سازی |
+| ۱۶ | `16_blackout.jpg` | ۳۰ | تالار تاریک دیتاسنتر با چند چراغ اضطراری کهربایی؛ از دست رفتن زیرساخت |
+| ۱۷ | `17_night_ops.jpg` | ۳۱ | میز بلند اتاق عملیات در شب با مانیتورهای روشن؛ سه شب مهاجرت |
+| ۱۸ | `18_padlock.jpg` | ۳۲ | قفل برنجی کوچک روی در عظیم گاوصندوق؛ یک دسترسی |
+| ۱۹ | `19_dawn.jpg` | ۳۳ و ۳۴ | پنجره‌ی اتاق عملیات پیش از طلوع با اولین خط نارنجی؛ انتظار بار صبح |
+| ۲۰ | `20_graph.jpg` | ۳۵ و ۳۷ | شبکه‌ای از سیم و مهره‌ی طلا روی مشکی؛ ISR و ایجنت‌ها |
+| ۲۱ | `21_box.jpg` | ۴۲ | جعبه‌ی مشکی بسته با نور طلایی از زیر درش؛ نسخه‌ی بعدی |
+| ۲۲ | `22_gold_network.jpg` | ۴۶ | شبکه‌ی ترک‌های طلایی روی همان سنگ؛ هر شکستی چیزی اضافه کرد |
+| ۲۳ | `23_colonnade.jpg` | ۲۵ | همان تخته‌سنگِ اسلاید SPOF، این بار روی هفت ستون؛ مدیر شدن (تازه) |
+| ۲۴ | `24_two_chairs.jpg` | ۲۷ | دو صندلی خالی روبه‌روی هم زیر یک چراغ؛ واحد کار عوض شد (تازه) |
+| ۲۵ | `25_student_desk.jpg` | ۴۱ | یک صندلی دسته‌دار کلاس با دفتری سفید؛ دوباره مبتدی شدن (تازه) |
 
 ## پرامپت‌ها
 
 ### `01_cover.jpg`
 
-**اسلاید:** ۲ (عنوان) و ۳۹ (پرسش و پاسخ، کم‌نور)
+**اسلاید:** ۲ (عنوان) و ۴۷ (پرسش و پاسخ، کم‌نور)
 
 **کاربرد:** مخاطب باید از همان ثانیه‌ی اول حس کند چیزی شکسته و با طلا ترمیم شده است؛ این تصویر لحن بصری کل ارائه را تعیین می‌کند.
 
@@ -294,7 +297,7 @@ An empty open-plan office at dusk, rows of dark desks, tall windows glowing deep
 
 ### `15_bridge.jpg`
 
-**اسلاید:** ۲۵ (نسخه‌ی ۴.۰.۰؛ سه سال آماده‌سازی، قبل از مهاجرت)
+**اسلاید:** ۲۹ (نسخه‌ی ۵.۰.۰؛ سه سال آماده‌سازی، قبل از مهاجرت)
 
 **کاربرد:** سه سال کارِ واقعی که بیشترِ پل را ساخته است؛ فقط دهانه‌ی آخر، یعنی خودِ مهاجرت، مانده.
 
@@ -310,7 +313,7 @@ A nearly finished steel bridge enters from the left edge of the frame and reache
 
 ### `16_blackout.jpg`
 
-**اسلاید:** ۲۶ (خرداد ۱۴۰۴؛ کل زیرساخت از بین رفت)
+**اسلاید:** ۳۰ (خرداد ۱۴۰۴؛ کل زیرساخت از بین رفت)
 
 **کاربرد:** سکوت و تاریکی جدی و باوقار: نه دراما و نه ترس، فقط حس از دست رفتن.
 
@@ -326,7 +329,7 @@ A large datacenter hall in near-total darkness, long rows of silent server racks
 
 ### `17_night_ops.jpg`
 
-**اسلاید:** ۲۷ (سه شب مهاجرت)
+**اسلاید:** ۳۱ (سه شب مهاجرت)
 
 **کاربرد:** خستگی و تعهد شب‌های طولانی کار، بدون قهرمان‌سازی؛ جای خالی آدم‌ها خودش حرف می‌زند.
 
@@ -342,7 +345,7 @@ A long desk in an operations room at night, a row of monitors glowing cold cyan-
 
 ### `18_padlock.jpg`
 
-**اسلاید:** ۲۸ (بدترین لحظه: یک دسترسی که نزدیک بود همه‌چیز را متوقف کند)
+**اسلاید:** ۳۲ (بدترین لحظه: یک دسترسی که نزدیک بود همه‌چیز را متوقف کند)
 
 **کاربرد:** تناقض تلخ و بامزه‌ی ماجرا: سه سال آماده‌سازی، و مانع آخر یک قفل کوچک.
 
@@ -358,7 +361,7 @@ A tiny brass padlock hanging from a small steel hasp on an enormous, smooth matt
 
 ### `19_dawn.jpg`
 
-**اسلاید:** ۲۹ و ۳۰ (۰۶:۰۰ تا ۰۶:۳۰؛ اول کم‌نور، بعد روشن‌تر)
+**اسلاید:** ۳۳ و ۳۴ (۰۶:۰۰ تا ۰۶:۳۰؛ اول کم‌نور، بعد روشن‌تر)
 
 **کاربرد:** انتظار پیش از طلوع و بار صبحی که هنوز نیامده: امیدی کم‌رنگ، نه جشن پیروزی.
 
@@ -374,7 +377,7 @@ View from inside a dark operations room toward a wide window at pre-dawn: deep b
 
 ### `20_graph.jpg`
 
-**اسلاید:** ۳۱ (ISR؛ پلتفرم ارکستریشن با ایجنت‌های AI)
+**اسلاید:** ۳۵ (ISR؛ پلتفرم ارکستریشن با ایجنت‌های AI) و ۳۷ (دو عدد قبل و بعد؛ خیلی کم‌نور)
 
 **کاربرد:** هماهنگی چیزهای زیاد مثل نخ‌هایی که به هم بسته شده‌اند: آینده‌نگر، اما دست‌ساز و گرم، نه علمی‌تخیلی.
 
@@ -390,7 +393,7 @@ Fine gold wire threads strung between tiny polished gold beads that glow softly,
 
 ### `21_box.jpg`
 
-**اسلاید:** ۳۵ (نسخه‌ی ۵.۰.۰؛ هنوز منتشر نشده)
+**اسلاید:** ۴۲ (نسخه‌ی ۶.۰.۰؛ هنوز منتشر نشده)
 
 **کاربرد:** کنجکاوی و انتظار: چیزی بسته و ناشناخته که هنوز نوشته نشده، ولی از زیر درش روشنایی بیرون می‌زند.
 
@@ -406,7 +409,7 @@ A sealed matte black box with a flat closed lid rests on a low stone pedestal in
 
 ### `22_gold_network.jpg`
 
-**اسلاید:** ۳۸ (جمله‌ی آخر: هر شکستی چیزی اضافه کرد)
+**اسلاید:** ۴۶ (جمله‌ی آخر: هر شکستی چیزی اضافه کرد)
 
 **کاربرد:** در پایان، همان سنگ شکسته‌ی روز اول پر از ترمیم‌های طلایی است: شکست‌ها آخر کار نبودند و چیزی به ما اضافه کردند.
 
@@ -420,6 +423,54 @@ A wide slab of matte black obsidian stone seen from slightly above, crossed by m
 
 **اگر خوب درنیامد:** ترک‌ها در مرکز هم پررنگ و شلوغ می‌شوند و زیر متن می‌روند یا طلا مثل نئون می‌درخشد؛ اضافه کنید `fewer, thinner and dimmer gold lines in the horizontal centre band, gold as real metal, not neon`.
 
+### `23_colonnade.jpg`
+
+**اسلاید:** ۲۵ (نسخه‌ی ۴.۰.۰؛ مدیر شدن)
+
+**کاربرد:** قافیه‌ی بصری با `13_pillar`: همان تالار و همان تخته‌سنگِ اسلاید SPOF، ولی این بار بار روی یک ستون نیست و روی هفت ستون نشسته است. هفت، تعداد اعضای تیم است.
+
+**پرامپت:** (اگر مدل تصویر مرجع می‌پذیرد، `13_pillar` را به‌عنوان مرجع بدهید و `Keep the same hall, stone, lighting and camera as the reference image.` را به ابتدای پرامپت اضافه کنید.)
+
+```text
+A massive slab of dark stone like a low roof in a vast dark hall, resting on exactly seven slender plain stone columns standing in one single row. The row of columns sits in the left third of the frame and recedes slightly into the darkness, the far end of the slab vanishing. A beam of warm gold light falls from above onto the nearest columns; one column has a hairline crack filled with polished gold, like kintsugi repair. The right two-thirds is dark and empty. Photorealistic cinematic still-life photograph, 85mm lens, shallow depth of field, fine film grain, matte black and dark slate materials, one warm key light, deep shadows, real polished gold as the only saturated colour, minimalist, 16:9 landscape. Absolutely no text: no letters, numbers, logos, labels or watermarks anywhere, and no faces.
+```
+
+**ترکیب‌بندی:** ردیف ستون‌ها در یک‌سوم چپ است و نور از بالا می‌تابد؛ دوسوم راست تاریک و خالی می‌ماند.
+
+**اگر خوب درنیامد:** مدل تعداد ستون‌ها را کم‌وزیاد می‌کند یا تالاری شبیه معبد یونانی می‌سازد؛ اضافه کنید `exactly seven plain slender columns in a single row, no capitals, no ornaments, not a temple, the hall otherwise empty`. تعداد ستون‌ها مهم است؛ اگر شش یا هشت تا شد دوباره بسازید.
+
+### `24_two_chairs.jpg`
+
+**اسلاید:** ۲۷ («واحد کار عوض شد»؛ مصاحبه‌ها و آموزش)
+
+**کاربرد:** میز کارِ این نسخه: دو صندلی روبه‌روی هم. کار دیگر پشت مانیتور نیست؛ در گفت‌وگو با یک آدم دیگر است. قافیه‌ای با `11_workbench`.
+
+**پرامپت:**
+
+```text
+Two simple empty matte black chairs facing each other across a small bare dark table in a dark quiet room, placed in the left third of the frame. A single warm pendant lamp hangs above the table and casts a soft pool of golden light on the tabletop; on the table lies one closed plain black notebook with a thin polished gold pen beside it. Nobody is present. The right two-thirds is dark, empty room. Photorealistic cinematic still-life photograph, 85mm lens, shallow depth of field, fine film grain, matte black and dark slate materials, one warm key light, deep shadows, real polished gold as the only saturated colour, minimalist, 16:9 landscape. Absolutely no text: no letters, numbers, logos, labels or watermarks anywhere, and no faces.
+```
+
+**ترکیب‌بندی:** دو صندلی و میز در یک‌سوم چپ‌اند؛ دوسوم راست اتاق تاریک و خالی می‌ماند.
+
+**اگر خوب درنیامد:** مدل آدم روی صندلی می‌نشاند، لپ‌تاپ و مانیتور روی میز می‌گذارد یا صحنه را شبیه اتاق بازجویی می‌کند؛ اضافه کنید `both chairs completely empty, no people, no laptop, no screen, warm and calm like a quiet meeting corner, not an interrogation room`.
+
+### `25_student_desk.jpg`
+
+**اسلاید:** ۴۱ («صندلی شاگردی»؛ دوباره مبتدی شدن)
+
+**کاربرد:** هزینه‌ی هر تغییر بزرگ: دوباره سر کلاس نشستن. یک صندلی دسته‌دار کلاس، خالی و منتظر؛ آرام و محترمانه، نه نوستالژیک و بچگانه.
+
+**پرامپت:**
+
+```text
+A single empty classroom chair with a small attached writing tablet arm, matte black metal and dark wood, standing alone in a dark empty classroom, in the left third of the frame, seen from a three-quarter angle. On the writing tablet lies an open notebook with completely blank pages and a thin polished gold pencil. A warm beam of light from a high window falls on the chair. The right two-thirds is dark and empty, with only a faint hint of other chairs lost in shadow. Photorealistic cinematic still-life photograph, 85mm lens, shallow depth of field, fine film grain, matte black and dark slate materials, one warm key light, deep shadows, real polished gold as the only saturated colour, minimalist, 16:9 landscape. Absolutely no text: no letters, numbers, logos, labels or watermarks anywhere, and no faces.
+```
+
+**ترکیب‌بندی:** صندلی در یک‌سوم چپ است و نور از بالا روی آن می‌افتد؛ دوسوم راست تاریک و خالی می‌ماند.
+
+**اگر خوب درنیامد:** مدل تخته‌سیاهِ پر از نوشته، کلاسی پر از صندلی یا دفتری با خط و نوشته می‌سازد؛ اضافه کنید `no blackboard, no writing anywhere, notebook pages completely blank, only one chair clearly visible, the rest of the room in darkness`.
+
 ## اسلایدهایی که عمداً عکس ندارند
 
 این اسلایدها عمداً تایپوگرافیک یا سیاه‌اند (کد، نمودار یا یک جمله روی زمینه‌ی سیاه) و هیچ تصویری برایشان ساخته نمی‌شود:
@@ -432,11 +483,15 @@ A wide slab of matte black obsidian stone seen from slightly above, crossed by m
 - اسلاید ۱۸: Trigger ≠ Root cause
 - اسلاید ۲۳: یک جمله روی زمینه‌ی سیاه
 - اسلاید ۲۴: فایل CODEOWNERS و «من نه.»
-- اسلاید ۳۳: «۳ ثانیه» و کامنت
-- اسلاید ۳۴: دو جمله با علامت مساوی
-- اسلاید ۳۶: جدول Added و Removed
-- اسلاید ۳۷: CHANGELOG شما
+- اسلاید ۲۶: نمودار scale-up و scale-out
+- اسلاید ۲۸: کامنت «مدیر شد؛ دیگه فنی نیست» و یک تست قرمز
+- اسلاید ۳۸: «۳ ثانیه» و کامنت
+- اسلاید ۳۹: دو جمله با علامت مساوی
+- اسلاید ۴۰: «۱۶ سال، یک کار»
+- اسلاید ۴۳: جدول Added و Removed
+- اسلاید ۴۴: جمله‌هایی که شکست
+- اسلاید ۴۵: CHANGELOG شما
 
-اسلاید ۳۲ (ویدئوی دمو) هم در این فایل تصویری ندارد.
+اسلاید ۳۶ (ویدئوی دمو) هم در این فایل تصویری ندارد.
 
 </div>

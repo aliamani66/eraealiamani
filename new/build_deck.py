@@ -168,13 +168,16 @@ def pill(s, x, y, label, color, filled=False, size=20, w=None, h=44, font=F_MONO
     return w
 
 
+RAIL_DOTS = 6   # v1 .. v5 and the unreleased one
+
+
 def rail(s, current):
-    """Five dots at the bottom: v1 .. v4 and the unreleased one. Oldest on the left, like a git log."""
+    """One dot per major version at the bottom, the unreleased one last. Oldest on the left, like a git log."""
     gap, dot = 44, 10
-    x0 = W / 2 - 2 * gap
+    x0 = W / 2 - (RAIL_DOTS - 1) / 2 * gap
     y = 694
-    s.line(x0, y, x0 + 4 * gap, y, WHITE, lw=1.5, alpha=14)
-    for i in range(5):
+    s.line(x0, y, x0 + (RAIL_DOTS - 1) * gap, y, WHITE, lw=1.5, alpha=14)
+    for i in range(RAIL_DOTS):
         cx = x0 + i * gap
         if i == current:
             s.oval(cx - 8, y - 8, 16, 16, fill=GOLD)
@@ -335,7 +338,7 @@ def s02(step):
     s.text(420, 138, 796, 40, "TECHTALK  ·  CHANGELOG.md", size=20, color=GOLD, font=F_MONO, bold=True, align="r", rtl=False)
     s.text(380, 182, 836, 282, "BREAKING\nCHANGES", size=88, font=F_BLACK, align="r", rtl=False, spacing=0.86)
     s.rect(W - 64 - 132, 478, 132, 5, fill=GOLD)
-    s.text(380, 500, 836, 60, "CHANGELOG یک مهندس؛ ۱۶ سال روی پروداکشن", size=28, align="r")
+    s.text(380, 500, 836, 60, "پذیرشِ تغییر؛ از روی CHANGELOG یک مهندس", size=28, align="r")
     s.text(380, 566, 836, 52, "علی امانی", size=28, color=GOLD, font=F_BOLD, align="r")
     return s
 
@@ -345,19 +348,23 @@ def s03(step):
     backdrop(s, None, "plain")
     window(s, 64, 84, 580, 552, "CHANGELOG.md")
     code(s, 104, 166, 500, ["{dim|#} {white,b|CHANGELOG}"], size=32, pitch=70)
-    code(s, 104, 258, 500, [
-        "{dim|## [5.0.0]} {orange|- Unreleased}",
-        "{gold|## [4.0.0]} {muted|- 1404}",
+    code(s, 104, 250, 500, [
+        "{dim|## [6.0.0]} {orange|- Unreleased}",
+        "{gold|## [5.0.0]} {muted|- 1404}",
+        "{gold|## [4.0.0]} {muted|- 1401}",
         "{gold|## [3.0.0]} {muted|- 1398}",
         "{gold|## [2.0.0]} {muted|- 1394}",
         "{gold|## [1.0.0]} {muted|- 1389}",
-    ], size=28, pitch=70)
-    s.text(700, 104, 516, 160, "این ارائه\nیک CHANGELOG است.", size=36, font=F_BLACK, align="r")
-    s.text(700, 276, 516, 56, "نه مالِ یک نرم‌افزار؛ مالِ یک آدم.", size=28, color=MUTED, align="r")
-    s.rect(W - 64 - 132, 354, 132, 5, fill=GOLD)
-    s.text(700, 384, 516, 110, "چهار نسخه‌ی اصلی،\nو یکی که هنوز release نشده.", size=30, align="r")
-    bw = pill(s, W - 64 - 150, 540, "blameless", GREEN, filled=True, w=150)
-    s.text(700, 536, 516 - bw - 18, 52, "اسم‌ها فقط برای تشکر.", size=26, color=TEXT, align="r")
+    ], size=28, pitch=60)
+    s.text(700, 92, 516, 160, "این ارائه\nیک CHANGELOG است.", size=36, font=F_BLACK, align="r")
+    s.text(700, 258, 516, 56, "نه مالِ یک نرم‌افزار؛ مالِ یک آدم.", size=28, color=MUTED, align="r")
+    s.rect(W - 64 - 132, 330, 132, 5, fill=GOLD)
+    s.text(700, 352, 516, 110, "پنج نسخه‌ی اصلی،\nو یکی که هنوز release نشده.", size=30, align="r")
+    # the two ground rules of the talk
+    bw = pill(s, W - 64 - 150, 494, "blameless", GREEN, filled=True, w=150)
+    s.text(664, 490, 552 - bw - 18, 52, "اسم‌ها فقط برای تشکر.", size=24, color=TEXT, align="r")
+    bw = pill(s, W - 64 - 172, 562, "sample data", GOLD, filled=True, w=172)
+    s.text(664, 558, 552 - bw - 18, 52, "موضوع تغییر است، نه من.", size=24, color=TEXT, align="r")
     return s
 
 
@@ -390,9 +397,10 @@ def s05(step):
     chrome(s, "v1.0.0", "stable", GREEN, "۱۳۸۹", at=0)
     s.text(520, 124, 696, 110, "دولوپرِ جاوا", size=64, font=F_BLACK, align="r")
     s.text(520, 252, 696, 40, "### Added", size=22, color=GREEN, font=F_MONO, bold=True, align="r", rtl=False)
-    row(s, 520, 300, 696, 66, "+", "پنج سال، فقط کد", size=30)
-    row(s, 520, 376, 696, 66, "+", "کلاس، معماری، تست‌های سبز", size=30)
-    s.text(520, 478, 696, 60, "پنج سال، فقط patch و minor.", size=30, color=MUTED, align="r")
+    row(s, 520, 300, 696, 62, "+", "پنج سال، فقط کد", size=30)
+    row(s, 520, 370, 696, 62, "+", "کلاس، معماری، تست‌های سبز", size=30)
+    row(s, 520, 440, 696, 62, "+", "یک code generator: {mono,gold,b|NCG}", size=30)
+    s.text(520, 530, 696, 60, "پنج سال، فقط patch و minor.", size=30, color=MUTED, align="r")
     return s
 
 
@@ -490,7 +498,7 @@ def s12(step):
     backdrop(s, "07_manuals.jpg", "hero")
     chrome(s, "v2.1.0", "Added" if step == 0 else "Removed", GREEN if step == 0 else RED, "۱۳۹۵", at=1)
     s.text(540, 100, 676, 104, "WebLogic", size=64, font=F_BLACK, align="r", rtl=False)
-    row(s, 540, 216, 676, 62, "+", "۴ سرور، هر کدام ۶۴ گیگ رم", size=28)
+    row(s, 540, 216, 676, 62, "+", "۴ سرور، ۶۴ گیگ رم", size=28)
     row(s, 540, 286, 676, 62, "+", "یک بار: حدودِ ۸۰٪ بارِ کل CMS", size=28)
     row(s, 540, 356, 676, 62, "+", "ماژولِ احراز هویت، از نو", size=28)
     s.text(540, 436, 676, 110, "۲ تا ۳ هزار صفحه داکیومنت،\nبا دیکشنری", size=32, color=GOLD, font=F_BLACK, align="r", spacing=0.95)
@@ -653,7 +661,7 @@ def s21(step):
     s = Slide("21" if step == 0 else "21.1", fade=(step == 0))
     backdrop(s, "13_pillar.jpg", "hero")
     chrome(s, "v3.0.0", year="۱۳۹۸", at=2)
-    s.text(380, 112, 836, 50, "یکی از بچه‌ها به سیستم‌هایش می‌گفت «بچه‌م».", size=26, color=MUTED, align="r")
+    s.text(380, 112, 836, 50, "جمله‌ای که همه‌ی ما یک بار شنیده‌ایم یا گفته‌ایم:", size=26, color=MUTED, align="r")
     s.text(380, 180, 836, 210, "«به این سیستم دست نزنید؛\nقلقش دستِ منه.»", size=44, font=F_BLACK, align="r")
     if step == 1:
         s.rect(W - 64 - 180, 428, 180, 70, fill=RED, alpha=16, line=RED, lw=2.5, r=14)
@@ -697,22 +705,105 @@ def s24(step):
 
 
 def s25(step):
-    s = Slide("25")
+    s = Slide("25" if step == 0 else "25.1", fade=(step == 0))
+    backdrop(s, "23_colonnade.jpg", "hero")
+    chrome(s, "v4.0.0", "BREAKING CHANGE", RED, "۱۴۰۱", at=3)
+    row(s, 500, 124, 716, 70, "-", "نقش: کارشناس", size=32, font=F_BOLD)
+    row(s, 500, 204, 716, 70, "+", "نقش: مدیرِ تیمِ R&D", size=32, font=F_BOLD)
+    if step == 0:
+        s.text(500, 300, 716, 60, "روی کاغذ: فقط یک عنوان.", size=30, color=MUTED, align="r")
+    else:
+        s.text(420, 300, 796, 40, "کامنتی که همه از حفظیم", size=22, color=MUTED, align="r")
+        bubble(s, 420, 348, 796, 110, "همه‌ی ما", "مدیر شد؛ دیگه فنی نیست.", size=30)
+        s.text(420, 484, 796, 60, "کی این جمله را گفته؟", size=30, color=GOLD, font=F_BOLD, align="r")
+    return s
+
+
+def s26(step):
+    s = Slide("26" if step == 0 else "26.1", fade=(step == 0))
+    backdrop(s, None, "plain")
+    chrome(s, "v4.0.0", year="۱۴۰۱", at=3)
+    for x, label, name, col in ((676, "تا آن روز", "scale-up", GOLD), (64, "از آن روز", "scale-out", GREEN)):
+        s.rect(x, 110, 540, 340, fill=PANEL, alpha=94, line=BORDER, lw=1.5, r=20)
+        s.text(x + 30, 124, 480, 44, label, size=24, color=MUTED, font=F_BOLD, align="r")
+        s.text(x + 30, 124, 480, 44, name, size=26, color=col, font=F_MONO, bold=True, align="l", rtl=False)
+    s.text(604, 110, 72, 340, "←", size=40, color=GOLD, font=F_MONO, bold=True, align="c", rtl=False)
+    # scale-up: one node that only ever gets bigger (the smaller outlines are its earlier sizes)
+    cx, floor = 676 + 270, 390
+    s.rect(cx - 85, floor - 196, 170, 196, fill=GOLD, alpha=8, line=GOLD, lw=2, r=12)
+    s.rect(cx - 62, floor - 138, 124, 138, line=GOLD, lw=1.5, r=10, line_alpha=45)
+    s.rect(cx - 40, floor - 84, 80, 84, line=GOLD, lw=1.5, r=8, line_alpha=30)
+    s.oval(cx + 57, floor - 182, 12, 12, fill=GOLD)
+    s.text(676 + 30, 402, 480, 44, "یک نود؛ هر بار قوی‌تر", size=24, align="c")
+    # scale-out: seven nodes behind one entry point
+    x0, pitch, top = 96, 68, 248
+    s.oval(64 + 270 - 7, 190, 14, 14, fill=GREEN)
+    s.line(64 + 270, 204, 64 + 270, 222, GREEN, lw=1.5, alpha=70)
+    s.line(x0 + 28, 222, x0 + 6 * pitch + 28, 222, GREEN, lw=1.5, alpha=70)
+    for i in range(7):
+        nx = x0 + i * pitch
+        s.line(nx + 28, 222, nx + 28, top, GREEN, lw=1.5, alpha=70)
+        s.rect(nx, top, 56, 104, fill="113322", line=GREEN, lw=1.5, r=10, line_alpha=70)
+        s.oval(nx + 36, top + 10, 10, 10, fill=GREEN)
+        for k in range(3):
+            s.rect(nx + 10, top + 30 + k * 9, 26, 3, fill=WHITE, alpha=28)
+    s.text(64 + 30, 402, 480, 44, "چند نود؛ بار روی همه", size=24, align="c")
+    if step == 0:
+        s.text(64, 470, 1152, 84, "مدیر شدن یعنی {gold|scale-out}.", size=44, font=F_BLACK, align="c")
+        s.text(64, 560, 1152, 50, "بار با قوی‌تر کردنِ یک نود جواب نمی‌گیرد.", size=28, color=MUTED, align="c")
+    else:
+        pill(s, cx - 52, floor - 190, "state", RED, filled=True, w=104, h=40)
+        s.text(64, 470, 1152, 84, "شرطش: {red|state} روی یک نود نماند.", size=44, font=F_BLACK, align="c")
+        s.text(64, 560, 1152, 50, "«قلقش دستِ منه» یعنی یک نودِ stateful.", size=28, color=MUTED, align="c")
+    return s
+
+
+def s27(step):
+    s = Slide("27" if step == 0 else "27.1", fade=(step == 0))
+    backdrop(s, "24_two_chairs.jpg", "hero")
+    chrome(s, "v4.0.0", "Added", GREEN, "۱۴۰۱ تا امروز", at=3)
+    s.text(500, 100, 716, 84, "واحدِ کار عوض شد", size=48, font=F_BLACK, align="r")
+    row(s, 500, 204, 716, 66, "+", "حدودِ ۳۰۰ مصاحبه؛ ۲۵ همکارِ جدید", size=28)
+    row(s, 500, 280, 716, 66, "+", "دوره‌های DevOps: ۱۲۰ نفر، ۸۰۰ ساعت", size=28)
+    row(s, 500, 356, 716, 66, "+", "تیمِ R&D: امروز ۷ نفر", size=28)
+    s.text(500, 440, 716, 50, "هیچ‌کدام commit نیست.", size=28, color=MUTED, align="r")
+    if step == 1:
+        s.text(400, 514, 816, 110, "خروجیِ این نسخه {gold|آدم‌ها} هستند.", size=40, font=F_BLACK, align="r")
+    return s
+
+
+def s28(step):
+    s = Slide("28" if step == 0 else "28.1", fade=(step == 0))
+    backdrop(s, None, "plain")
+    chrome(s, "v4.0.0", year="۱۴۰۱", at=3)
+    bubble(s, 64, 100, 1152, 104, "همه‌ی ما", "مدیر شد؛ دیگه فنی نیست.", size=30)
+    window(s, 64, 224, 1152, 160, "test_v3.py", "failed", RED)
+    code(s, 104, 296, 1072, ["{gold|assert} output {gold|==} {blue|my_commits}"], size=30, pitch=64, tint={0: RED})
+    s.text(64, 404, 1152, 70, "تستِ نسخه‌ی قبل، روی نسخه‌ی جدید.", size=36, font=F_BLACK, align="c")
+    s.text(64, 474, 1152, 50, "قرمز شدنش همیشه باگ نیست.", size=28, color=MUTED, align="c")
+    if step == 1:
+        s.rect(W / 2 - 66, 546, 132, 5, fill=GOLD)
+        s.text(64, 562, 1152, 90, "اگر یک ماه نباشید، چه چیزی می‌خوابد؟", size=40, color=GOLD, font=F_BLACK, align="c")
+    return s
+
+
+def s29(step):
+    s = Slide("29")
     backdrop(s, "15_bridge.jpg", "hero")
-    chrome(s, "v4.0.0", year="۱۴۰۴", at=3)
+    chrome(s, "v5.0.0", year="۱۴۰۴", at=4)
     s.text(520, 100, 696, 88, "سه سال آماده‌سازی", size=52, font=F_BLACK, align="r")
     items = [("+", "Dockerfile سرویس‌ها"), ("+", "Deploymentها"), ("+", "آموزشِ تیم‌ها"),
-             ("+", "ایمیج‌ها: از ۳ گیگ به ۱ گیگ"), ("-", "مهاجرت: انجام نشده")]
+             ("+", "بعضی ایمیج‌ها: از ۳ گیگ به ۱ گیگ"), ("-", "مهاجرت: انجام نشده")]
     for i, (kind, label) in enumerate(items):
         row(s, 520, 202 + i * 66, 696, 58, kind, label, size=26, font=F_BOLD if kind == "-" else F_REG)
     s.text(520, 546, 696, 96, "می‌خواستیم اول همه‌چیز\n{gold|صددرصد} آماده باشد.", size=30, font=F_BOLD, align="r", spacing=0.98)
     return s
 
 
-def s26(step):
-    s = Slide("26" if step == 0 else "26.1", fade=(step == 0))
+def s30(step):
+    s = Slide("30" if step == 0 else "30.1", fade=(step == 0))
     backdrop(s, "16_blackout.jpg", "hero")
-    chrome(s, "v4.0.0", "BREAKING CHANGE", RED, "خرداد ۱۴۰۴", at=3)
+    chrome(s, "v5.0.0", "BREAKING CHANGE", RED, "خرداد ۱۴۰۴", at=4)
     s.text(360, 150, 856, 50, "اینسیدنت وقتِ قبلی نمی‌گیرد.", size=28, color=MUTED, align="r")
     s.text(360, 206, 856, 120, "کل زیرساخت از بین رفت.", size=56, font=F_BLACK, align="r")
     if step == 1:
@@ -726,10 +817,10 @@ NIGHTS = [("سرویس‌ها چطور با هم حرف بزنند؟", "سه ک�
           ("اپ‌های stateful", "همان‌طور stateful، در کلاستر.\nدیتابیس‌ها سرِ جایشان ماندند.")]
 
 
-def s27(step):
-    s = Slide("27" if step == 0 else f"27.{step}", fade=(step == 0))
+def s31(step):
+    s = Slide("31" if step == 0 else f"31.{step}", fade=(step == 0))
     backdrop(s, "17_night_ops.jpg", "dim")
-    chrome(s, "v4.0.0", year="خرداد ۱۴۰۴", at=3)
+    chrome(s, "v5.0.0", year="خرداد ۱۴۰۴", at=4)
     s.text(64, 96, 1152, 64, "مسئله‌های آن سه شب", size=40, font=F_BLACK, align="r")
     for i, (problem, fix) in enumerate(NIGHTS[:step + 1]):
         y = 176 + i * 156
@@ -742,12 +833,12 @@ def s27(step):
     return s
 
 
-def s28(step):
-    s = Slide("28" if step == 0 else "28.1", fade=(step == 0))
+def s32(step):
+    s = Slide("32" if step == 0 else "32.1", fade=(step == 0))
     backdrop(s, "18_padlock.jpg", "hero")
-    chrome(s, "v4.0.0", year="خرداد ۱۴۰۴", at=3)
+    chrome(s, "v5.0.0", year="خرداد ۱۴۰۴", at=4)
     s.text(500, 116, 716, 170, "اپِ اصلی\nبالا نمی‌آمد.", size=58, font=F_BLACK, align="r", spacing=0.92)
-    s.text(500, 296, 716, 54, "داشتیم برمی‌گشتیم روی VMها.", size=30, color=MUTED, align="r")
+    s.text(500, 296, 716, 54, "داشتیم تصمیم می‌گرفتیم برگردیم روی VMها.", size=26, color=MUTED, align="r")
     if step == 1:
         s.text(500, 386, 716, 40, "Root cause", size=24, color=BLUE, font=F_MONO, bold=True, align="r", rtl=False)
         s.text(500, 424, 716, 140, "یک دسترسی.", size=88, color=GOLD, font=F_BLACK, align="r")
@@ -755,13 +846,13 @@ def s28(step):
     return s
 
 
-def s29(step):
-    s = Slide("29" if step == 0 else f"29.{step}", fade=(step == 0))
+def s33(step):
+    s = Slide("33" if step == 0 else f"33.{step}", fade=(step == 0))
     if s.image("19_dawn.jpg"):
         s.rect(0, 0, W, H, fill=BG, alpha=(86, 86, 70)[step])
     else:
         s.grad(0, 0, W, H, [(0, "0B0C10", 100), (100, ("14161E", "14161E", "10221A")[step], 100)], vertical=True)
-    chrome(s, "v4.0.0", year="خرداد ۱۴۰۴", at=3)
+    chrome(s, "v5.0.0", year="خرداد ۱۴۰۴", at=4)
     clock = ("06:00", "06:15", "06:30")[step]
     s.text(64, 96, 640, 230, clock, size=150, color=GREEN if step == 2 else TEXT, font=F_MONO, bold=True, align="l", rtl=False)
     caption = ("همه‌چیز بالا. بار: صفر.", "به هیچ‌چیز دست نزدیم.", "شعبه‌ها باز شدند.")[step]
@@ -794,39 +885,41 @@ def s29(step):
     return s
 
 
-def s30(step):
-    s = Slide("30")
+def s34(step):
+    s = Slide("34")
     if s.image("19_dawn.jpg"):
         s.rect(0, 0, W, H, fill=BG, alpha=78)
     else:
         backdrop(s, None, "plain")
-    chrome(s, "v4.0.0", "Released", GREEN, "۱۴۰۴", at=3)
-    row(s, 64, 108, 1152, 66, "+", "همه‌ی سرویس‌ها روی Kubernetes، جز ویندوزی‌ها", size=30, font=F_BOLD)
-    row(s, 64, 184, 1152, 104, "~", "{mono,orange,b|Known issue}\nدامنه‌ی سرویس‌ها با دامنه‌ی داخلیِ Kubernetes یکی بود؛ عوضش کردیم.", size=24)
-    s.text(40, 318, 1200, 120, "آمادگیِ صددرصد هیچ‌وقت نمی‌رسد.", size=54, color=GOLD, font=F_BLACK, align="c")
-    s.text(64, 448, 1152, 60, "آن سه سال لازم بود؛ بدونِ آن، آن سه شب ممکن نبود.", size=30, align="c")
-    s.text(64, 546, 1152, 70, "سه شب بی‌خوابی افتخار نیست.", size=36, color=MUTED, font=F_BOLD, align="c")
+    chrome(s, "v5.0.0", "Released", GREEN, "۱۴۰۴", at=4)
+    row(s, 64, 104, 1152, 60, "+", "۹۰ سرویس روی Kubernetes؛ همه، جز ویندوزی‌ها", size=28, font=F_BOLD)
+    row(s, 64, 172, 1152, 60, "+", "نه یک سرورِ قوی، نه یک آدمِ قوی: چند کلاستر و چند تیم", size=28, font=F_BOLD)
+    row(s, 64, 240, 1152, 100, "~", "{mono,orange,b|Known issue}\nدامنه‌ی سرویس‌ها با دامنه‌ی داخلیِ Kubernetes یکی بود؛ عوضش کردیم.", size=24)
+    s.text(40, 362, 1200, 110, "آمادگیِ صددرصد هیچ‌وقت نمی‌رسد.", size=52, color=GOLD, font=F_BLACK, align="c")
+    s.text(64, 478, 1152, 56, "آن سه سال لازم بود؛ بدونِ آن، آن سه شب ممکن نبود.", size=30, align="c")
+    s.text(64, 558, 1152, 70, "سه شب بی‌خوابی افتخار نیست.", size=36, color=MUTED, font=F_BOLD, align="c")
     return s
 
 
-def s31(step):
-    s = Slide("31")
+def s35(step):
+    s = Slide("35")
     backdrop(s, "20_graph.jpg", "hero")
-    chrome(s, "Unreleased", year="امروز", at=4)
-    s.text(500, 80, 716, 120, "ISR", size=68, font=F_BLACK, align="r", rtl=False)
-    s.text(500, 190, 716, 40, "Intelligent SRE", size=24, color=GOLD, font=F_MONO, bold=True, align="r", rtl=False)
+    chrome(s, "Unreleased", year="امروز", at=5)
+    s.text(500, 76, 716, 110, "ISR", size=64, font=F_BLACK, align="r", rtl=False)
+    s.text(500, 180, 716, 40, "Intelligent SRE", size=24, color=GOLD, font=F_MONO, bold=True, align="r", rtl=False)
     items = [("+", "n8n: ارکستریشنِ فرایندها"), ("+", "اجرای جاب‌های Jenkins"), ("+", "تگِ نسخه‌ها در Git"),
              ("+", "ایجنت‌های AI: تحلیلِ لاگ و عیب‌یابی"), ("+", "ژنراتورِ توپولوژی"),
+             ("+", "Query Executor؛ از ۱۳۹۴ تا امروز"),
              ("~", "تأییدِ انسان: فعلاً تقریباً همه‌جا")]
     for i, (kind, label) in enumerate(items):
-        row(s, 500, 248 + i * 64, 716, 56, kind, label, size=26, font=F_BOLD if kind == "~" else F_REG)
+        row(s, 500, 234 + i * 60, 716, 52, kind, label, size=24, font=F_BOLD if kind == "~" else F_REG)
     return s
 
 
-def s32(step):
-    s = Slide("32")
+def s36(step):
+    s = Slide("36")
     backdrop(s, None, "plain")
-    chrome(s, "Unreleased", "demo", GOLD, "امروز", at=4)
+    chrome(s, "Unreleased", "demo", GOLD, "امروز", at=5)
     if os.path.exists(os.path.join(SLIDES_DIR, DEMO_VIDEO)):
         s.video = os.path.join(SLIDES_DIR, DEMO_VIDEO)
     s.oval(W / 2 - 80, 150, 160, 160, fill=GOLD, alpha=10, line=GOLD, lw=3)
@@ -836,8 +929,30 @@ def s32(step):
     return s
 
 
-def s33(step):
-    s = Slide("33" if step == 0 else "33.1", bg=BLACK, fade=(step == 0))
+BEFORE_AFTER = [("اجرای یک چنج", "۱۰ دقیقه", "n8n"),
+                ("تشخیصِ سلامتِ سرویس\nبرای پشتیبانیِ لایه‌ی اول", "۵ دقیقه", "AI")]
+
+
+def s37(step):
+    s = Slide("37")
+    backdrop(s, "20_graph.jpg", "dim")
+    chrome(s, "Unreleased", "Changed", ORANGE, "امروز", at=5)
+    for i, (what, after, how) in enumerate(BEFORE_AFTER):
+        x = 676 - i * 612
+        s.rect(x, 104, 540, 356, fill=PANEL, alpha=94, line=BORDER, lw=1.5, r=20)
+        s.text(x + 30, 114, 480, 92, what, size=26, font=F_BOLD, align="r", spacing=0.95)
+        pill(s, x + 24, 138, how, GOLD, h=44)
+        for y, h, col, label, size, font in ((216, 58, RED, "قبل: ۲ ساعت", 30, F_REG), (284, 150, GREEN, after, 76, F_BLACK)):
+            s.rect(x + 24, y, 492, h, fill=col, alpha=12)
+            s.rect(x + 24 + 492 - 6, y, 6, h, fill=col, alpha=95)
+            s.text(x + 44, y, 448, h, label, size=size, color=GREEN if col == GREEN else TEXT, font=font, align="r")
+    row(s, 64, 478, 1152, 58, "~", "Anomaly Detection: از threshold ثابت به مدل", size=26)
+    s.text(64, 556, 1152, 56, "کارِ روزانه‌ی خودمان هم با AI است؛ توسعه و تستِ خودِ ISR هم.", size=26, color=MUTED, align="c")
+    return s
+
+
+def s38(step):
+    s = Slide("38" if step == 0 else "38.1", bg=BLACK, fade=(step == 0))
     s.text(64, 110, 1152, 270, "۳ ثانیه", size=170, color=GOLD, font=F_BLACK, align="c")
     s.text(64, 384, 1152, 56, "اولین کدِ تمیزی که AI تحویلم داد", size=30, color=MUTED, align="c")
     if step == 1:
@@ -845,10 +960,10 @@ def s33(step):
     return s
 
 
-def s34(step):
-    s = Slide("34")
+def s39(step):
+    s = Slide("39")
     backdrop(s, None, "plain")
-    chrome(s, "Unreleased", year="امروز", at=4)
+    chrome(s, "Unreleased", year="امروز", at=5)
     for x, label, quote, col in ((676, "دیروز", "به این سیستم دست نزنید؛ قلقش دستِ منه.", TEXT),
                                  (64, "امروز", "AI چرت‌وپرت می‌نویسه؛ هیچ ماشینی جای کد زدنِ من رو نمی‌گیره.", TEXT)):
         s.rect(x, 130, 540, 330, fill=PANEL, alpha=94, line=BORDER, lw=1.5, r=20)
@@ -859,11 +974,61 @@ def s34(step):
     return s
 
 
-def s35(step):
-    s = Slide("35")
+AUTOMATED = [("۸۹ تا ۹۲", "NCG", "کد را یک code generator نوشت"),
+             ("۱۳۹۴", "Query Executor", "کوئری و لاگِ دستی"),
+             ("۱۳۹۶", "Jenkins", "دیپلویِ دستی"),
+             ("۱۳۹۷", "ELK", "گشتنِ لاگ با SSH"),
+             ("امروز", "n8n + AI", "چنجِ ۲ ساعته، ۱۰ دقیقه")]
+
+
+def s40(step):
+    s = Slide("40" if step == 0 else "40.1", fade=(step == 0))
+    backdrop(s, None, "plain")
+    chrome(s, "Unreleased", year="امروز", at=5)
+    s.text(64, 92, 1152, 64, "۱۶ سال، یک کار: کارِ دستی را به ماشین دادیم", size=34, font=F_BLACK, align="r")
+    for i, (when, tool, what) in enumerate(AUTOMATED):
+        y = 170 + i * 66
+        s.rect(64, y, 1152, 58, fill=PANEL, alpha=94, line=BORDER, lw=1.5, r=14)
+        s.text(1022, y, 170, 58, when, size=24, color=GOLD, font=F_BOLD, align="r")
+        s.text(706, y, 290, 58, tool, size=24, color=TEXT, font=F_MONO, bold=True, align="r", rtl=False)
+        s.text(644, y, 44, 58, "←", size=24, color=DIM, font=F_MONO, align="c", rtl=False)
+        s.text(88, y, 548, 58, what, size=26, align="r")
+    if step == 1:
+        s.rect(64, 514, 1152, 132, fill=GOLD, alpha=10, line=GOLD, lw=2, r=18)
+        s.text(64, 520, 1152, 120, "فرقِ این بار فقط یک چیز است:\n{gold|ماشین را ما ننوشته‌ایم.}", size=36, font=F_BLACK,
+               align="c", spacing=0.95)
+    return s
+
+
+CLASSES = [("مهر ۱۳۹۴", "Oracle Admin"),
+           ("آذر ۱۳۹۶", "لینوکسِ پیشرفته"),
+           ("آبان ۱۳۹۹", "Kubernetes"),
+           ("آبان ۱۴۰۴", "هوشِ مصنوعی: «مفاهیمِ پایه»")]
+
+
+def s41(step):
+    s = Slide("41" if step == 0 else "41.1", fade=(step == 0))
+    backdrop(s, "25_student_desk.jpg", "hero")
+    chrome(s, "Unreleased", year="امروز", at=5)
+    s.text(500, 92, 716, 84, "صندلیِ شاگردی", size=50, font=F_BLACK, align="r")
+    for i, (when, what) in enumerate(CLASSES):
+        y = 190 + i * 68
+        s.rect(500, y, 716, 60, fill=PANEL, alpha=92, line=BORDER, lw=1.5, r=14)
+        s.text(1014, y, 180, 60, when, size=24, color=GOLD, font=F_BOLD, align="r")
+        s.text(520, y, 474, 60, what, size=24, font=F_BOLD, align="r")
+    if step == 0:
+        s.text(500, 472, 716, 50, "آخری: با ۱۵ سال سابقه.", size=26, color=MUTED, align="r")
+    else:
+        s.text(440, 466, 776, 120, "هزینه‌ای که در CHANGELOG نمی‌آید:\n{gold|دوباره شاگرد شدن.}", size=36, font=F_BLACK, align="r", spacing=0.95)
+        s.text(440, 592, 776, 56, "آخرین باری که شاگرد بودید کِی بود؟", size=28, color=MUTED, align="r")
+    return s
+
+
+def s42(step):
+    s = Slide("42")
     backdrop(s, "21_box.jpg", "hero")
-    chrome(s, "v5.0.0", "Unreleased", ORANGE, "امروز", at=4)
-    s.text(440, 122, 776, 52, "## [5.0.0] - Unreleased", size=30, color=GOLD, font=F_MONO, bold=True, align="r", rtl=False)
+    chrome(s, "v6.0.0", "Unreleased", ORANGE, "امروز", at=5)
+    s.text(440, 122, 776, 52, "## [6.0.0] - Unreleased", size=30, color=GOLD, font=F_MONO, bold=True, align="r", rtl=False)
     s.text(440, 178, 776, 46, "### BREAKING CHANGE", size=26, color=RED, font=F_MONO, bold=True, align="r", rtl=False)
     s.text(400, 262, 816, 130, "هنوز نوشته نشده.", size=64, font=F_BLACK, align="r")
     s.text(440, 410, 776, 60, "این یکی را خودمان می‌نویسیم.", size=34, color=MUTED, align="r")
@@ -874,29 +1039,52 @@ LEDGER = [("دولوپرِ جاوا", "۱۳۹۴: رفتم عملیات"),
           ("WebLogic", "۱۴۰۰، سپه: کنار رفت"),
           ("حلقه‌ی for و ۷۰ اسکریپت", "۱۳۹۶: Git و Jenkins"),
           ("پایپ‌لاین‌های دیروزِ من", "۱۳۹۹: همکارم بازنویسی کرد"),
+          ("نقش: کارشناس", "۱۴۰۱: مدیرِ تیمِ R&D"),
           ("سرویس‌ها روی VM", "۱۴۰۴: Kubernetes")]
 
 
-def s36(step):
-    s = Slide("36" if step == 0 else "36.1", fade=(step == 0))
+def s43(step):
+    s = Slide("43" if step == 0 else "43.1", fade=(step == 0))
     backdrop(s, None, "plain")
-    s.text(64, 40, 1152, 64, "یک بار، کل CHANGELOG از بالا", size=36, font=F_BLACK, align="r")
-    s.text(684, 118, 532, 40, "+ Added", size=22, color=GREEN, font=F_MONO, bold=True, align="r", rtl=False)
-    s.text(64, 118, 532, 40, "− Deprecated / Removed", size=22, color=RED, font=F_MONO, bold=True, align="r", rtl=False)
+    s.text(64, 34, 1152, 60, "یک بار، کل CHANGELOG از بالا", size=36, font=F_BLACK, align="r")
+    s.text(684, 100, 532, 40, "+ Added", size=22, color=GREEN, font=F_MONO, bold=True, align="r", rtl=False)
+    s.text(64, 100, 532, 40, "− Deprecated / Removed", size=22, color=RED, font=F_MONO, bold=True, align="r", rtl=False)
     for i, (added, removed) in enumerate(LEDGER):
-        y = 166 + i * 72
-        row(s, 684, y, 532, 62, "+", added, size=28, font=F_BOLD)
-        s.text(596, y, 88, 62, "←", size=28, color=DIM, font=F_MONO, align="c", rtl=False)
-        row(s, 64, y, 532, 62, "-", removed, size=28)
+        y = 146 + i * 66
+        row(s, 684, y, 532, 58, "+", added, size=26, font=F_BOLD)
+        s.text(596, y, 88, 58, "←", size=26, color=DIM, font=F_MONO, align="c", rtl=False)
+        row(s, 64, y, 532, 58, "-", removed, size=26)
     if step == 1:
-        s.rect(64, 548, 1152, 124, fill=GOLD, alpha=10, line=GOLD, lw=2, r=18)
-        s.text(64, 554, 1152, 40, "چیزی که در هیچ نسخه‌ای Removed نشد", size=22, color=MUTED, align="c")
-        s.text(64, 590, 1152, 76, "بساز · تحویل بده · رها کن · برو سراغِ بعدی", size=40, color=GOLD, font=F_BLACK, align="c")
+        s.rect(64, 554, 1152, 124, fill=GOLD, alpha=10, line=GOLD, lw=2, r=18)
+        s.text(64, 560, 1152, 40, "چیزی که در هیچ نسخه‌ای Removed نشد", size=22, color=MUTED, align="c")
+        s.text(64, 596, 1152, 76, "بساز · تحویل بده · رها کن · برو سراغِ بعدی", size=40, color=GOLD, font=F_BLACK, align="c")
     return s
 
 
-def s37(step):
-    s = Slide("37")
+BROKEN = [("۱۳۹۴", "من دولوپرِ جاوام."),
+          ("۱۳۹۸", "قلقش دستِ منه."),
+          ("۱۴۰۱", "تا خودم نزنم، حساب نیست."),
+          ("امروز", "کد رو من می‌نویسم.")]
+
+
+def s44(step):
+    s = Slide("44" if step == 0 else "44.1", bg=BLACK, fade=(step == 0))
+    s.text(64, 34, 1152, 64, "ابزار را یاد می‌گیریم. این جمله‌ها سخت بود:", size=32, font=F_BOLD, align="r")
+    for i, (when, quote) in enumerate(BROKEN):
+        y = 120 + i * 86
+        today = i == len(BROKEN) - 1
+        row(s, 64, y, 1152, 72, "~" if today else "-", "«" + quote + "»", size=34, font=F_BLACK)
+        s.text(88, y, 200, 72, when, size=22, color=ORANGE if today else MUTED, font=F_BOLD, align="l")
+    if step == 1:
+        y = 120 + len(BROKEN) * 86
+        s.rect(64, y, 1152, 72, fill=GOLD, alpha=8, line=GOLD, lw=2)
+        s.text(84, y, 1040, 72, "جمله‌ی شما؟", size=34, color=GOLD, font=F_BLACK, align="r")
+    s.text(64, 574, 1152, 80, "BREAKING CHANGE ابزار را نمی‌شکند؛ {gold|همین جمله} را می‌شکند.", size=32, font=F_BOLD, align="c")
+    return s
+
+
+def s45(step):
+    s = Slide("45")
     backdrop(s, None, "plain")
     s.rect(64, 48, 1152, 624, fill=PANEL, alpha=94, line=BORDER, lw=1.5, r=20)
     s.text(104, 62, 500, 64, "## [Unreleased] - Saturday", size=24, color=GOLD, font=F_MONO, bold=True, align="l", rtl=False)
@@ -912,8 +1100,8 @@ def s37(step):
     return s
 
 
-def s38(step):
-    s = Slide("38" if step == 0 else "38.1", fade=(step == 0))
+def s46(step):
+    s = Slide("46" if step == 0 else "46.1", fade=(step == 0))
     backdrop(s, "22_gold_network.jpg", "center")
     s.text(64, 140, 1152, 96, "کد deprecated می‌شود.", size=54, font=F_BLACK, align="c")
     s.text(64, 240, 1152, 96, "ابزار deprecated می‌شود.", size=54, font=F_BLACK, align="c")
@@ -924,8 +1112,8 @@ def s38(step):
     return s
 
 
-def s39(step):
-    s = Slide("39")
+def s47(step):
+    s = Slide("47")
     backdrop(s, "01_cover.jpg", "hero")
     s.text(420, 196, 796, 160, "پرسش و پاسخ", size=92, font=F_BLACK, align="r")
     s.rect(W - 64 - 132, 372, 132, 5, fill=GOLD)
@@ -937,12 +1125,22 @@ def s39(step):
 # (builder, number of steps). Each step is one slide in the pptx and one press of the clicker.
 DECK = [(s01, 2), (s02, 1), (s03, 1), (s04, 2), (s05, 1), (s06, 2), (s07, 1), (s08, 2), (s09, 2), (s10, 1),
         (s11, 1), (s12, 2), (s13, 2), (s14, 3), (s15, 2), (s16, 3), (s17, 1), (s18, 1), (s19, 1), (s20, 2),
-        (s21, 2), (s22, 2), (s23, 1), (s24, 1), (s25, 1), (s26, 2), (s27, 3), (s28, 2), (s29, 3), (s30, 1),
-        (s31, 1), (s32, 1), (s33, 2), (s34, 1), (s35, 1), (s36, 2), (s37, 1), (s38, 2), (s39, 1)]
+        (s21, 2), (s22, 2), (s23, 1), (s24, 1), (s25, 2), (s26, 2), (s27, 2), (s28, 2), (s29, 1), (s30, 2),
+        (s31, 3), (s32, 2), (s33, 3), (s34, 1), (s35, 1), (s36, 1), (s37, 1), (s38, 2), (s39, 1), (s40, 2),
+        (s41, 2), (s42, 1), (s43, 2), (s44, 2), (s45, 1), (s46, 2), (s47, 1)]
 
 
 def build_slides():
-    return [fn(step) for fn, steps in DECK for step in range(steps)]
+    slides = []
+    for n, (fn, steps) in enumerate(DECK, 1):
+        for step in range(steps):
+            s = fn(step)
+            want = str(n) if step == 0 else f"{n}.{step}"
+            # a slide inserted without renumbering the ones after it would put the wrong notes under them
+            if fn.__name__ != f"s{n:02d}" or s.key != want:
+                raise SystemExit(f"DECK position {n}: {fn.__name__} built slide {s.key!r}; expected s{n:02d} and {want!r}.")
+            slides.append(s)
+    return slides
 
 
 # ---------------------------------------------------------------- speaker notes from script.md
@@ -1290,7 +1488,7 @@ def main():
     if os.path.exists(os.path.join(SLIDES_DIR, DEMO_VIDEO)):
         print(f"  demo video embedded: {DEMO_VIDEO}")
     else:
-        print(f"  demo video not there yet ({DEMO_VIDEO}); slide 32 is a placeholder.")
+        print(f"  demo video not there yet ({DEMO_VIDEO}); slide 36 is a placeholder.")
     if args.check:
         return
     if args.html:
